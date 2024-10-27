@@ -1,6 +1,7 @@
 package com.taskmanager.taskmanager.controllers;
 
 import com.taskmanager.taskmanager.entities.TaskBoard;
+import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.services.TaskBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,9 +30,9 @@ public class TaskBoardController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/creator/{userId}")
-    public ResponseEntity<List<TaskBoard>> getTaskBoardsByCreatedBy(@PathVariable Long userId) {
-        List<TaskBoard> taskBoards = taskBoardService.getTaskBoardsByCreatedBy(userId);
+    @GetMapping("/creator/{createdBy}")
+    public ResponseEntity<List<TaskBoard>> getTaskBoardsByCreatedBy(@PathVariable User createdBy) {
+        List<TaskBoard> taskBoards = taskBoardService.getTaskBoardsByCreatedBy(createdBy);
         return ResponseEntity.ok(taskBoards);
     }
 

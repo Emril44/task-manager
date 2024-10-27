@@ -1,6 +1,7 @@
 package com.taskmanager.taskmanager.services;
 
 import com.taskmanager.taskmanager.entities.TaskBoard;
+import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.repositories.TaskBoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,8 @@ public class TaskBoardService {
         return taskBoardRepository.findById(id);
     }
 
-    public List<TaskBoard> getTaskBoardsByCreatedBy(Long userId) {
-        return taskBoardRepository.findByCreatedBy(userId);
+    public List<TaskBoard> getTaskBoardsByCreatedBy(User createdBy) {
+        return taskBoardRepository.findByCreatedBy(createdBy);
     }
 
     public TaskBoard getTaskBoardByName(String name) {
