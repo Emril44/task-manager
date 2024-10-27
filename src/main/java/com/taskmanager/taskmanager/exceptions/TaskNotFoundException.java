@@ -1,4 +1,7 @@
 package com.taskmanager.taskmanager.exceptions;
 
-public class TaskNotFoundException {
+public class TaskNotFoundException extends RuntimeException {
+    public TaskNotFoundException(String message) {
+        super(message);
+    }
 }
