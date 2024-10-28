@@ -17,7 +17,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String password;
+    private String password_hash;
 
     @Column(nullable = false)
     private String role;
@@ -50,11 +50,11 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        return password_hash;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password_hash = password;
     }
 
     public String getRole() {
