@@ -27,7 +27,8 @@ const Register = () => {
             await api.post('/api/auth/register', {
                 username: formData.username,
                 email: formData.email,
-                password: formData.password
+                password: formData.password,
+                role: "USER"
             });
             navigate('/login'); // Redirect to login page upon successful registration
         } catch (error) {
