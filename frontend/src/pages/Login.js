@@ -19,6 +19,7 @@ const Login = () => {
             // Save token or user data to local storage or state here
             navigate('/dashboard'); // Redirect to dashboard upon successful login
         } catch (error) {
+            console.error("Login Error:", error.response ? error.response.data : error.message);
             setError('Invalid email or password');
         }
     };
