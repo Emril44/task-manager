@@ -1,35 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { getUserById } from './services/api';
+// src/App.js
+import React from 'react';
+import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
-function App() {
-  const [user, setUser] = useState(null);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    getUserById(2)
-        .then((response) => {
-          setUser(response.data);
-        })
-        .catch((error) => {
-          setError('Error fetching user');
-        });
-  }, []);
-
-  return (
-      <div className="App">
-        <h1>User Information</h1>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {user ? (
-            <div>
-              <p>Username: {user.username}</p>
-              <p>Email: {user.email}</p>
-              <p>Role: {user.role}</p>
-            </div>
-        ) : (
-            <p>Loading...</p>
-        )}
-      </div>
-  );
-}
+const App = () => {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Navigate to="/login" replace />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+            </Routes>
+        </Router>
+    );
+};
 
 export default App;

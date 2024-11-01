@@ -5,3 +5,4 @@ const api = axios.create({
 });
 
 export const getUserById = (id) => api.get(`/api/users/${id}`);
+export default api;
