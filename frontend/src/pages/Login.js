@@ -15,9 +15,13 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('/api/auth/login', formData); // Adjust URL as needed
-            // Save token or user data to local storage or state here
-            navigate('/dashboard'); // Redirect to dashboard upon successful login
+            const response = await api.post('/api/auth/login', {
+                email: formData.email,
+                password: formData.password
+            });
+            // Store token and redirect
+            localStorage.setItem('authToken', response.data);
+            navigate('/dashboard');
         } catch (error) {
             console.error("Login Error:", error.response ? error.response.data : error.message);
             setError('Invalid email or password');

@@ -1,6 +1,7 @@
 package com.taskmanager.taskmanager.controllers;
 
 // Import statements
+import com.taskmanager.taskmanager.dtos.LoginRequest;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.services.UserService;
 
-
-
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
@@ -26,7 +25,11 @@ public class AuthenticationController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/register")
@@ -46,22 +49,37 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User loginRequest) {
+    public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getUsername(), loginRequest.getPassword())
-            );
+            Authentication authentication;
+            try {
+                authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                System.out.println("Authentication successful: " + authentication.isAuthenticated());
+            } catch (Exception e) {
+                System.out.println("Authentication failed: " + e.getMessage());
+                return ResponseEntity.badRequest().body("Invalid email or password");
+            }
+
+            System.out.println(loginRequest.getEmail());
+            System.out.println(loginRequest.getPassword());
 
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String token = Jwts.builder()
-                    .setSubject(userDetails.getUsername())
-                    .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                    .compact();
-
-            return ResponseEntity.ok(token);
+            System.out.println("UserDetails: " + userDetails.getUsername());
+            System.out.println("JWT: " + jwtSecret);
+            try {
+                String token = Jwts.builder()
+                        .setSubject(userDetails.getUsername())
+                        .signWith(SignatureAlgorithm.HS256, jwtSecret.getBytes())
+                        .compact();
+                System.out.println("Generated JWT Token: " + token);
+                return ResponseEntity.ok(token);
+            } catch (Exception e) {
+                System.out.println("Error generating token: " + e.getMessage());
+                return ResponseEntity.badRequest().body("Token generation error");
+            }
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Invalid username or password");
+            return ResponseEntity.badRequest().body("Invalid email or password");
         }
     }
 }
