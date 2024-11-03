@@ -32,8 +32,19 @@ const getTaskBoards = async () => {
     }
 };
 
+const getTasksByBoardId = async (boardId) => {
+    try {
+        const { data } = await api.get(`/api/task_boards/${boardId}/tasks`);
+        return data;
+    } catch (error) {
+        console.error(`Error fetching tasks for board ${boardId}:`, error);
+        return [];
+    }
+};
+
 // Attach functions to the `api` instance
 api.getUser = getUser;
 api.getTaskBoards = getTaskBoards;
+api.getTasksByBoardId = getTasksByBoardId;
 
 export default api;

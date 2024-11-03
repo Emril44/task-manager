@@ -17,10 +17,18 @@ const Dashboard = () => {
                 const userData = await api.getUser(userId);
                 const taskBoardData = await api.getTaskBoards();
 
+                // Fetch tasks for each board and attach them to the board data
+                const boardsWithTasks = await Promise.all(
+                    taskBoardData.map(async (board) => {
+                        const tasks = await api.getTasksByBoardId(board.id);
+                        return { ...board, tasks }; // Add tasks to each board object
+                    })
+                );
+
                 console.log(taskBoardData);
 
                 setUser(userData);
-                setTaskBoards(taskBoardData);
+                setTaskBoards(boardsWithTasks);
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {

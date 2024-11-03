@@ -36,4 +36,6 @@ public class TaskService {
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
     }
+
+    public List<Task> getTasksByTaskBoardId(Long id) {return taskRepository.findByTaskBoardId(id);}
 }

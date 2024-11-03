@@ -4,6 +4,7 @@ import com.taskmanager.taskmanager.entities.Task;
 import com.taskmanager.taskmanager.entities.TaskBoard;
 import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.services.TaskBoardService;
+import com.taskmanager.taskmanager.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,9 @@ public class TaskBoardController {
     @Autowired
     private TaskBoardService taskBoardService;
 
+    @Autowired
+    private TaskService taskService;
+
     @PostMapping
     public ResponseEntity<TaskBoard> createTaskBoard(@RequestBody TaskBoard taskBoard) {
         TaskBoard createdTaskBoard = taskBoardService.createTaskBoard(taskBoard);
@@ -36,12 +40,30 @@ public class TaskBoardController {
                     map.put("id", board.getId());
                     map.put("name", board.getName());
                     map.put("description", board.getDescription());
-                    // Add other essential fields as needed
                     return map;
                 })
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(simplifiedTaskBoards);
+    }
+
+    @GetMapping("/{id}/tasks")
+    public ResponseEntity<List<Map<String, Object>>> getTasksByTaskBoardId(@PathVariable Long id) {
+        List<Task> tasks = taskService.getTasksByTaskBoardId(id);
+        List<Map<String, Object>> simplifiedTasks = tasks.stream()
+                .map(task -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("id", task.getId());
+                    map.put("title", task.getTitle());
+                    map.put("description", task.getDescription());
+                    map.put("status", task.getStatus());
+                    map.put("priority", task.getPriority());
+                    map.put("dueDate", task.getDueDate());
+                    return map;
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(simplifiedTasks);
     }
 
     @GetMapping("/{id}")
