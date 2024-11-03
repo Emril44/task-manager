@@ -3,13 +3,21 @@ import Task from './Task';
 
 const TaskBoard = ({ board }) => {
     return (
-        <div className="task-board">
+        <div>
             <h2>{board.name}</h2>
-            <div className="tasks-list">
-                {board.tasks.map((task) => (
-                    <Task key={task.id} task={task} />
-                ))}
-            </div>
+            <p>{board.description}</p>
+
+            {/* Check if `tasks` exists and is an array before mapping */}
+            {Array.isArray(board.tasks) && board.tasks.length > 0 ? (
+                board.tasks.map((task) => (
+                    <div key={task.id}>
+                        <h3>{task.title}</h3>
+                        <p>{task.description}</p>
+                    </div>
+                ))
+            ) : (
+                <p>No tasks available for this board.</p>
+            )}
         </div>
     );
 };

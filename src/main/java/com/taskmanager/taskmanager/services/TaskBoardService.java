@@ -22,6 +22,10 @@ public class TaskBoardService {
         return taskBoardRepository.findById(id);
     }
 
+    public List<TaskBoard> getAllTaskBoards() {
+        return taskBoardRepository.findAll();
+    }
+
     public List<TaskBoard> getTaskBoardsByCreatedBy(User createdBy) {
         return taskBoardRepository.findByCreatedBy(createdBy);
     }
