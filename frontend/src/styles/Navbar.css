@@ -1,0 +1,22 @@
+/* styles/Navbar.css */
+.navbar {
+    background-color: var(--navbar-bg-color);
+    display: flex;
+    align-items: center;
+    padding: var(--padding-small) var(--padding-medium);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-logo {
+    font-size: var(--font-large);
+    font-weight: bold;
+}
+
+.user-badge {
+    margin-left: auto;
+    padding: 4px 8px;
+    background-color: var(--highlight-color);
+    border-radius: var(--border-radius);
+    color: white;
+    font-size: var(--font-small);
+}

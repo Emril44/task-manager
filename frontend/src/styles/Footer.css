@@ -1,0 +1,17 @@
+.taskboard-management-bar {
+    background-color: var(--taskboard-bg-color);
+    border-top: 1px solid var(--border-color);
+    padding: var(--padding-small) var(--padding-medium);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.taskboard-management-bar select,
+.taskboard-management-bar button {
+    font-size: var(--font-small);
+    margin: 0 4px;
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}

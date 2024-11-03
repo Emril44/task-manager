@@ -1,0 +1,22 @@
+.taskboard {
+    background-color: var(--taskboard-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--padding-medium);
+    margin-bottom: var(--padding-large);
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-small);
+}
+
+.taskboard-title {
+    font-size: var(--font-medium);
+    font-weight: bold;
+    color: #333;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-small);
+}

@@ -1,0 +1,17 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--primary-bg-color);
+}
+
+.dashboard-container {
+    display: flex;
+    padding: var(--padding-large);
+}
+
+.taskboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--padding-medium);
+}

@@ -1,5 +1,6 @@
 // src/components/Task.js
 import React from 'react';
+import '../styles/Task.css'
 
 const Task = ({ task }) => {
     return (

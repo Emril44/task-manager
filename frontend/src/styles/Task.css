@@ -1,0 +1,19 @@
+.task {
+    background-color: var(--primary-bg-color);
+    border: 1px solid var(--border-color);
+    padding: var(--padding-small);
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-title {
+    font-size: var(--font-small);
+    color: #555;
+}
+
+.task-status {
+    font-size: var(--font-small);
+    color: var(--highlight-color);
+}

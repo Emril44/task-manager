@@ -1,6 +1,7 @@
 // src/components/TaskBoard.js
 import React from 'react';
 import Task from './Task';
+import '../styles/TaskBoard.css'
 
 const TaskBoard = ({ board }) => {
     return (
