@@ -4,42 +4,10 @@ import Task from './Task';
 import api from '../services/api';
 import '../styles/TaskBoard.css'
 
-const TaskBoard = ({ board, user, onDeleteTask, setTaskBoards }) => {
-    const handleDeleteTask = (taskId) => onDeleteTask(board.id, taskId);
-
+const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTask }) => {
     const [showCreateForm, setShowCreateForm] = useState(false);
-    const [newTask, setNewTask] = useState({
-        title: '',
-        description: '',
-        status: 'Pending',
-        priority: 1,
-        dueDate: '',
-    });
 
-    const handleCreateTask = async () => {
-        try {
-            const taskData = {
-                title: newTask.title,
-                description: newTask.description,
-                status: newTask.status,
-                priority: newTask.priority,
-                due_date: newTask.dueDate,
-                task_board_id: board.id,
-                assigned_user: user.id
-            };
-            console.log(taskData);
-            const createdTask = await api.createTask(taskData);
-            setTaskBoards((prevTaskBoards) =>
-                prevTaskBoards.map((tb) =>
-                    tb.id === board.id ? { ...tb, tasks: [...tb.tasks, createdTask] } : tb
-                )
-            );
-            setShowCreateForm(false);
-            setNewTask({ title: '', description: '', priority: 1, status: 'Pending', dueDate: '' });
-        } catch (error) {
-            console.error("Failed to create task:", error);
-        }
-    };
+    const handleDeleteTask = (taskId) => onDeleteTask(board.id, taskId);
 
     return (
         <div className="task-board">
@@ -76,7 +44,7 @@ const TaskBoard = ({ board, user, onDeleteTask, setTaskBoards }) => {
                         value={newTask.dueDate}
                         onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
                     />
-                    <button onClick={handleCreateTask}>Create Task</button>
+                    <button onClick={onCreateTask}>Create Task</button>
                     <button className="cancel-button" onClick={() => setShowCreateForm(false)}>Cancel</button>
                 </div>
             ) : (

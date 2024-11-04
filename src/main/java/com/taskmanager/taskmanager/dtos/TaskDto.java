@@ -20,8 +20,8 @@ public class TaskDto {
         this.description = task.getDescription();
         this.status = task.getStatus();
         this.priority = task.getPriority();
-        this.dueDate = task.getDueDate();
-        this.assignedUserId = task.getAssignedUser() != null ? task.getAssignedUser().getId() : null;
+        this.taskBoardId = task.getTaskBoard().getId();
+        this.assignedUserId = task.getAssignedUser().getId();
     }
 
     public Long getId() {

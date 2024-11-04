@@ -1,3 +1,4 @@
+/* styles/variables.css */
 :root {
     /* Color Palette */
     --primary-bg-color: #f5f5f5; /* Background of app */
@@ -5,6 +6,12 @@
     --taskboard-bg-color: #ffffff; /* Task board container background */
     --border-color: #e0e0e0;
     --highlight-color: #ff6666; /* Red color for admin/user badges */
+
+    /* Button Colors */
+    --button-blue: #4299e1;
+    --button-blue-hover: #3182ce;
+    --button-red: #f56565;
+    --button-red-hover: #e53e3e;
 
     /* Font Sizes */
     --font-small: 0.875rem;

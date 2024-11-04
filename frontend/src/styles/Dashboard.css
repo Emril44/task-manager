@@ -1,3 +1,4 @@
+/* styles/Dashboard.css */
 .dashboard {
     display: flex;
     flex-direction: column;
@@ -5,13 +6,34 @@
     background-color: var(--primary-bg-color);
 }
 
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--navbar-bg-color);
+    padding: var(--padding-large);
+}
+
+.dashboard-title {
+    font-size: var(--font-large);
+    font-weight: bold;
+    margin: 0;
+}
+
+.user-dashboard {
+    font-size: var(--font-medium);
+    color: #333;
+}
+
 .dashboard-container {
     display: flex;
+    flex-direction: column;
     padding: var(--padding-large);
+    gap: var(--padding-large); /* Add space between sections */
 }
 
 .taskboard-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: var(--padding-medium);
 }

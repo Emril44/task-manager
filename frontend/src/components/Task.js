@@ -5,24 +5,29 @@ import '../styles/Task.css'
 const Task = ({ task, user, onDelete }) => {
     const canEditTask = user.role === 'ADMIN' || task.assignedUserId === user.id;
 
-    console.log("User role:", user.role);
-    console.log("Task assignedUserId:", task.assignedUserId);
-    console.log("User ID:", user.id);
-
     return (
         <div className="task">
-            <h3>{task.title}</h3>
-            <p>Description: {task.description}</p>
-            <p>Status: {task.status}</p>
-            <p>Priority: {task.priority}</p>
-            <p>Due Date: {new Date(task.dueDate).toLocaleDateString()}</p>
-
-            {canEditTask && (
-                <>
-                    <button onClick={() => handleEditTask(task.id)}>Edit Task</button>
-                    <button onClick={() => onDelete(task.id)}>Delete Task</button>
-                </>
-            )}
+            <div className="task-header">
+                <span className="task-title">{task.title}</span>
+                <span className="task-status">Status: {task.status}</span>
+            </div>
+            <div className="task-content">
+                <p>Description: {task.description}</p>
+            </div>
+            <div className="task-priority">
+                <span>Priority: {task.priority}</span>
+            </div>
+            <div className="task-due-date">
+                <p>Due Date: {new Date(task.dueDate).toLocaleDateString()}</p>
+            </div>
+            <div className="task-actions">
+                {canEditTask && (
+                    <>
+                        <button className="edit-button" onClick={() => handleEditTask(task.id)}>Edit Task</button>
+                        <button className="delete-button" onClick={() => onDelete(task.id)}>Delete Task</button>
+                    </>
+                )}
+            </div>
         </div>
     );
 };

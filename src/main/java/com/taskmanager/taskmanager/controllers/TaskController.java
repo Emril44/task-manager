@@ -1,5 +1,6 @@
 package com.taskmanager.taskmanager.controllers;
 
+import com.taskmanager.taskmanager.dtos.TaskDto;
 import com.taskmanager.taskmanager.entities.Task;
 import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.exceptions.TaskNotFoundException;
@@ -33,25 +34,28 @@ public class TaskController {
     private TaskBoardService taskBoardService;
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Map<String, Object> request) {
-        Long taskBoardId = ((Number) request.get("task_board_id")).longValue();
-        Long assignedUserId = ((Number) request.get("assigned_user")).longValue();
-
+    public ResponseEntity<TaskDto> createTask(@RequestBody Map<String, Object> request) {
         Task task = new Task();
         task.setTitle((String) request.get("title"));
         task.setDescription((String) request.get("description"));
         task.setStatus((String) request.get("status"));
         task.setPriority((Integer) request.get("priority"));
-        task.setDueDate(LocalDate.parse((String) request.get("due_date")));
 
-        // Fetch and assign TaskBoard and User entities based on provided IDs
-        task.setTaskBoard(taskBoardService.getTaskBoardById(taskBoardId)
-                .orElseThrow(() -> new TaskNotFoundException("TaskBoard not found")));
-        task.setAssignedUser(userService.getUserById(assignedUserId)
-                .orElseThrow(() -> new UserNotFoundException("User not found")));
+        // Parse the date if it's provided as a string
+        if (request.get("due_date") != null) {
+            task.setDueDate(LocalDate.parse((String) request.get("due_date")));
+        }
+
+        // Fetch and set the task board and assigned user by their IDs
+        Long taskBoardId = ((Number) request.get("task_board_id")).longValue();
+        Long assignedUserId = ((Number) request.get("assigned_user")).longValue();
+        task.setTaskBoard(taskBoardService.getTaskBoardById(taskBoardId).orElseThrow(() -> new TaskNotFoundException("Task board not found")));
+        task.setAssignedUser(userService.getUserById(assignedUserId).orElseThrow(() -> new UserNotFoundException("User not found")));
 
         Task createdTask = taskService.createTask(task);
-        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+        TaskDto taskDto = new TaskDto(createdTask);  // Map Task to TaskDTO
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskDto);
     }
 
     @GetMapping("/{taskId}")

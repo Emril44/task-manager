@@ -1,45 +1,69 @@
+/* styles/Task.css */
 .task {
     background-color: var(--primary-bg-color);
     border: 1px solid var(--border-color);
     padding: var(--padding-small);
     border-radius: var(--border-radius);
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr 1fr; /* Adjust these fractions as needed */
     align-items: center;
+    gap: var(--padding-small);
+    margin-bottom: var(--padding-small);
 }
 
-.task-title {
+.task-header {
+    grid-column: 1 / -1; /* Span the header across all columns */
     font-size: var(--font-small);
     color: #555;
-}
-
-.task-status {
-    font-size: var(--font-small);
-    color: var(--highlight-color);
+    display: flex;
+    justify-content: space-between;
 }
 
 .task h3 {
-    margin: 0 0 8px;
+    margin: 0;
+}
+
+.task-title {
+    font-weight: bold;
+}
+
+.task-status {
+    color: var(--highlight-color);
+    font-size: var(--font-small);
+    text-align: center;
+}
+
+.task-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
 }
 
 .task button {
-    background-color: #f56565;
-    color: white;
-    border: none;
     padding: 6px 12px;
-    margin-right: 8px;
+    border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.9em;
+    color: white;
 }
 
-.task button:hover {
-    background-color: #e53e3e;
-}
-
-.task button:last-of-type {
+.edit-button {
     background-color: #4299e1;
 }
+
+.delete-button {
+    background-color: #f56565;
+}
+
+.edit-button:hover {
+    background-color: #2a6390;
+}
+
+.delete-button:hover {
+    background-color: #a44444;
+}
+
 
 .create-task-form {
     display: flex;

@@ -19,4 +19,5 @@
     border-radius: var(--border-radius);
     color: white;
     font-size: var(--font-small);
+    margin-right: 16px;
 }

@@ -8,6 +8,13 @@ const Dashboard = () => {
     const [user, setUser] = useState(null);
     const [taskBoards, setTaskBoards] = useState([]);
     const [loading, setLoading] = useState(true); // New loading state
+    const [newTask, setNewTask] = useState({
+        title: '',
+        description: '',
+        status: 'Pending',
+        priority: 1,
+        dueDate: '',
+    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -57,8 +64,31 @@ const Dashboard = () => {
         }
     };
 
-    console.log("User:", user);
-    console.log("TaskBoards:", taskBoards);
+    const handleCreateTask = async (boardId) => {
+        try {
+            const taskData = {
+                title: newTask.title,
+                description: newTask.description,
+                status: newTask.status,
+                priority: newTask.priority,
+                due_date: newTask.dueDate,
+                task_board_id: boardId,
+                assigned_user: user.id
+            };
+            console.log(taskData);
+            const createdTask = await api.createTask(taskData);
+            console.log(createdTask);
+            setTaskBoards((prevTaskBoards) =>
+                prevTaskBoards.map((tb) =>
+                    tb.id === boardId ? { ...tb, tasks: [...tb.tasks, createdTask] } : tb
+                )
+            );
+            setNewTask({ title: '', description: '', priority: 1, status: 'Pending', dueDate: '' });
+            console.log(taskBoards);
+        } catch (error) {
+            console.error("Failed to create task:", error);
+        }
+    };
 
     if (loading) {
         return <p>Loading data...</p>;
@@ -67,7 +97,15 @@ const Dashboard = () => {
             <div>
                 <Navbar user={user} />
                 {taskBoards.map((board) => (
-                    <TaskBoard key={board.id} board={board} user={user} onDeleteTask={handleDeleteTask} setTaskBoards={setTaskBoards}/>
+                    <TaskBoard
+                        key={board.id}
+                        board={board}
+                        user={user}
+                        newTask={newTask}
+                        setNewTask={setNewTask}
+                        onDeleteTask={handleDeleteTask}
+                        onCreateTask={() => handleCreateTask(board.id)}  // Pass board ID
+                    />
                 ))}
 
                 {/* Conditionally render footer if user is admin */}
