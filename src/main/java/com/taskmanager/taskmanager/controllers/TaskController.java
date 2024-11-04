@@ -71,6 +71,30 @@ public class TaskController {
         }
     }
 
+    @PutMapping("/{taskId}")
+    public ResponseEntity<TaskDto> updateTask(@PathVariable Long taskId, @RequestBody TaskDto updatedTaskDto, Principal principal) {
+        Task existingTask = taskService.getTaskById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Task not found"));
+
+        User currentUser = userService.getUserByEmail(principal.getName());
+        if (currentUser.getRole().equals("ADMIN") || existingTask.getAssignedUser().getId().equals(currentUser.getId())) {
+            existingTask.setTitle(updatedTaskDto.getTitle());
+            existingTask.setDescription(updatedTaskDto.getDescription());
+            existingTask.setPriority(updatedTaskDto.getPriority());
+            existingTask.setDueDate(updatedTaskDto.getDueDate());
+            existingTask.setStatus(updatedTaskDto.getStatus());
+
+            Task savedTask = taskService.saveTask(existingTask);
+
+            // Convert `Task` to `TaskDto`
+            TaskDto responseDto = new TaskDto(savedTask);
+
+            return ResponseEntity.ok(responseDto);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    }
+
     @GetMapping("/status/{status}")
     public ResponseEntity<List<Task>> getTasksByStatus(@PathVariable String status) {
         List<Task> tasks = taskService.getTasksByStatus(status);

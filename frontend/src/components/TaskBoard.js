@@ -4,7 +4,7 @@ import Task from './Task';
 import api from '../services/api';
 import '../styles/TaskBoard.css'
 
-const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTask }) => {
+const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTask, onUpdateTask }) => {
     const [showCreateForm, setShowCreateForm] = useState(false);
 
     const handleDeleteTask = (taskId) => onDeleteTask(board.id, taskId);
@@ -22,7 +22,13 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
             {/* Render tasks */}
             <div className="tasks">
                 {board.tasks.map(task => (
-                    <Task key={task.id} task={task} user={user} onDelete={handleDeleteTask} />
+                    <Task
+                        key={task.id}
+                        task={task}
+                        user={user}
+                        onDelete={handleDeleteTask}
+                        onUpdate={onUpdateTask} // Pass onUpdateTask as a prop
+                    />
                 ))}
             </div>
 

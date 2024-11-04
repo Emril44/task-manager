@@ -38,4 +38,7 @@ public class TaskService {
     }
 
     public List<Task> getTasksByTaskBoardId(Long id) {return taskRepository.findByTaskBoardId(id);}
+
+    public Task saveTask(Task existingTask) {return taskRepository.save(existingTask);
+    }
 }

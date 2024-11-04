@@ -90,6 +90,27 @@ const Dashboard = () => {
         }
     };
 
+    const handleUpdateTask = async (taskId, updatedTaskData, boardId) => {
+        try {
+            const updatedTask = await api.updateTask(taskId, updatedTaskData);
+            setTaskBoards(prevTaskBoards =>
+                prevTaskBoards.map(board =>
+                    board.id === boardId
+                        ? {
+                            ...board,
+                            tasks: board.tasks.map(task =>
+                                task.id === taskId ? updatedTask : task
+                            )
+                        }
+                        : board
+                )
+            );
+            console.log("Task updated:", updatedTask);
+        } catch (error) {
+            console.error("Failed to update task:", error);
+        }
+    };
+
     if (loading) {
         return <p>Loading data...</p>;
     } else
@@ -104,7 +125,8 @@ const Dashboard = () => {
                         newTask={newTask}
                         setNewTask={setNewTask}
                         onDeleteTask={handleDeleteTask}
-                        onCreateTask={() => handleCreateTask(board.id)}  // Pass board ID
+                        onCreateTask={() => handleCreateTask(board.id)}
+                        onUpdateTask={(taskId, updatedTaskData) => handleUpdateTask(taskId, updatedTaskData, board.id)}  // Pass board ID
                     />
                 ))}
 

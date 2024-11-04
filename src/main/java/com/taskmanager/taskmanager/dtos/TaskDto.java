@@ -14,12 +14,16 @@ public class TaskDto {
     private Long taskBoardId;   // Only referencing the ID of the board
     private Long assignedUserId; // Only referencing the ID of the assigned user
 
+    public TaskDto() {
+    }
+
     public TaskDto(Task task) {
         this.id = task.getId();
         this.title = task.getTitle();
         this.description = task.getDescription();
         this.status = task.getStatus();
         this.priority = task.getPriority();
+        this.dueDate = task.getDueDate();
         this.taskBoardId = task.getTaskBoard().getId();
         this.assignedUserId = task.getAssignedUser().getId();
     }
@@ -78,5 +82,8 @@ public class TaskDto {
 
     public void setAssignedUserId(Long assignedUserId) {
         this.assignedUserId = assignedUserId;
+    }
+
+    public LocalDate getDueDate() {return dueDate;
     }
 }
