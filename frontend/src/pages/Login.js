@@ -21,6 +21,7 @@ const Login = () => {
             });
             // Store token and redirect
             localStorage.setItem('authToken', response.data);
+            localStorage.setItem('userId', response.data.userId);
             navigate('/dashboard');
         } catch (error) {
             console.error("Login Error:", error.response ? error.response.data : error.message);

@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.services.UserService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
@@ -49,37 +52,34 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody LoginRequest loginRequest) {
         try {
-            Authentication authentication;
-            try {
-                authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-                System.out.println("Authentication successful: " + authentication.isAuthenticated());
-            } catch (Exception e) {
-                System.out.println("Authentication failed: " + e.getMessage());
-                return ResponseEntity.badRequest().body("Invalid email or password");
-            }
-
-            System.out.println(loginRequest.getEmail());
-            System.out.println(loginRequest.getPassword());
+            // Authenticate the user with the provided email and password
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
+            );
 
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            System.out.println("UserDetails: " + userDetails.getUsername());
-            System.out.println("JWT: " + jwtSecret);
-            try {
-                String token = Jwts.builder()
-                        .setSubject(userDetails.getUsername())
-                        .signWith(SignatureAlgorithm.HS256, jwtSecret.getBytes())
-                        .compact();
-                System.out.println("Generated JWT Token: " + token);
-                return ResponseEntity.ok(token);
-            } catch (Exception e) {
-                System.out.println("Error generating token: " + e.getMessage());
-                return ResponseEntity.badRequest().body("Token generation error");
-            }
+
+            // Retrieve the User entity to access the user ID
+            User user = userService.getUserByEmail(userDetails.getUsername());
+
+            // Generate the JWT token
+            String token = Jwts.builder()
+                    .setSubject(userDetails.getUsername())
+                    .signWith(SignatureAlgorithm.HS256, jwtSecret.getBytes())
+                    .compact();
+
+            // Create the response map containing both token and userId
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("userId", user.getId()); // Add userId to the response
+
+            return ResponseEntity.ok(response);
+
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Invalid email or password");
+            System.out.println("Authentication or token generation failed: " + e.getMessage());
+            return ResponseEntity.badRequest().body(null); // Return null or an error message if needed
         }
     }
 }

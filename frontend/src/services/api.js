@@ -5,6 +5,14 @@ const api = axios.create({
     withCredentials: true
 });
 
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 // Define functions
 export const getUser = async (userId) => {
     const response = await api.get(`/api/users/${userId}`); // Update to use `users` and pass `userId`

@@ -14,7 +14,14 @@ const Dashboard = () => {
             try {
                 setLoading(true); // Start loading
 
-                const userId = 1; // Example user ID
+                const userId = localStorage.getItem('userId');
+                console.log(userId);
+
+                if (!userId) {
+                    console.error("User ID not found, please log in again.");
+                    return;
+                }
+
                 const userData = await api.getUser(userId);
                 const taskBoardData = await api.getTaskBoards();
 
@@ -26,6 +33,7 @@ const Dashboard = () => {
                     })
                 );
 
+                console.log(userData);
                 console.log(taskBoardData);
 
                 setUser(userData);
