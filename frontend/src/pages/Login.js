@@ -20,7 +20,7 @@ const Login = () => {
                 password: formData.password
             });
             // Store token and redirect
-            localStorage.setItem('authToken', response.data);
+            localStorage.setItem('authToken', response.data.token);
             localStorage.setItem('userId', response.data.userId);
             navigate('/dashboard');
         } catch (error) {

@@ -111,7 +111,7 @@ const Dashboard = () => {
         }
     };
 
-    if (loading) {
+    if (!user) {
         return <p>Loading data...</p>;
     } else
         return (

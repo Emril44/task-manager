@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.services.UserService;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,10 +65,13 @@ public class AuthenticationController {
             // Retrieve the User entity to access the user ID
             User user = userService.getUserByEmail(userDetails.getUsername());
 
-            // Generate the JWT token
+            // Generate the JWT token with essential claims
             String token = Jwts.builder()
-                    .setSubject(userDetails.getUsername())
-                    .signWith(SignatureAlgorithm.HS256, jwtSecret.getBytes())
+                    .setSubject(userDetails.getUsername()) // Set 'sub' as email or username
+                    .claim("userId", user.getId()) // Optional: Include custom claims like user ID
+                    .setIssuedAt(new Date()) // Set the 'iat' (issued at)
+                    .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // Set 'exp' (e.g., 24 hrs)
+                    .signWith(SignatureAlgorithm.HS256, jwtSecret.getBytes()) // Sign with secret
                     .compact();
 
             // Create the response map containing both token and userId

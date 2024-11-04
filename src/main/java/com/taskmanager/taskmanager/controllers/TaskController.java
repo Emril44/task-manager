@@ -11,6 +11,10 @@ import com.taskmanager.taskmanager.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -72,27 +76,40 @@ public class TaskController {
     }
 
     @PutMapping("/{taskId}")
-    public ResponseEntity<TaskDto> updateTask(@PathVariable Long taskId, @RequestBody TaskDto updatedTaskDto, Principal principal) {
-        Task existingTask = taskService.getTaskById(taskId)
+    public ResponseEntity<?> updateTask(
+            @PathVariable Long taskId,
+            @RequestBody TaskDto updatedTaskDto) {
+
+        // Get the current authenticated user from SecurityContext
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication not found");
+        }
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+
+        // Retrieve the task to be updated
+        Task task = taskService.getTaskById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException("Task not found"));
 
-        User currentUser = userService.getUserByEmail(principal.getName());
-        if (currentUser.getRole().equals("ADMIN") || existingTask.getAssignedUser().getId().equals(currentUser.getId())) {
-            existingTask.setTitle(updatedTaskDto.getTitle());
-            existingTask.setDescription(updatedTaskDto.getDescription());
-            existingTask.setPriority(updatedTaskDto.getPriority());
-            existingTask.setDueDate(updatedTaskDto.getDueDate());
-            existingTask.setStatus(updatedTaskDto.getStatus());
-
-            Task savedTask = taskService.saveTask(existingTask);
-
-            // Convert `Task` to `TaskDto`
-            TaskDto responseDto = new TaskDto(savedTask);
-
-            return ResponseEntity.ok(responseDto);
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        // Optional: Check permissions - for example, only admins or assigned users can update the task
+        if (!task.getAssignedUser().getEmail().equals(username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not authorized to update this task");
         }
+
+        // Update task details with the values from the request body
+        task.setTitle(updatedTaskDto.getTitle());
+        task.setDescription(updatedTaskDto.getDescription());
+        task.setStatus(updatedTaskDto.getStatus());
+        task.setPriority(updatedTaskDto.getPriority());
+        task.setDueDate(updatedTaskDto.getDueDate());
+
+        // Save the updated task
+        Task updatedTask = taskService.saveTask(task);
+
+        // Return the updated task in the response
+        return ResponseEntity.ok(new TaskDto(updatedTask));
     }
 
     @GetMapping("/status/{status}")
