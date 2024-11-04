@@ -9,7 +9,6 @@ const Task = ({ task, user, onDelete }) => {
         <div className="task">
             <div className="task-header">
                 <span className="task-title">{task.title}</span>
-                <span className="task-status">Status: {task.status}</span>
             </div>
             <div className="task-content">
                 <p>Description: {task.description}</p>
@@ -19,9 +18,10 @@ const Task = ({ task, user, onDelete }) => {
             </div>
             <div className="task-due-date">
                 <p>Due Date: {new Date(task.dueDate).toLocaleDateString()}</p>
+                <span className="task-status">Status: {task.status}</span>
             </div>
             <div className="task-actions">
-                {canEditTask && (
+            {canEditTask && (
                     <>
                         <button className="edit-button" onClick={() => handleEditTask(task.id)}>Edit Task</button>
                         <button className="delete-button" onClick={() => onDelete(task.id)}>Delete Task</button>

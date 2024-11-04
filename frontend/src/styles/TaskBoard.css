@@ -1,15 +1,17 @@
-.taskboard {
+.task-board {
     background-color: var(--taskboard-bg-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: var(--padding-medium);
-    margin-bottom: var(--padding-large);
+    margin: var(--padding-large) auto; /* This centers it horizontally */
+    max-width: 1200px; /* Set your desired max-width */
     display: flex;
     flex-direction: column;
+
     gap: var(--padding-small);
 }
 
-.taskboard-title {
+.task-board-title {
     font-size: var(--font-medium);
     font-weight: bold;
     color: #333;
@@ -19,4 +21,18 @@
     display: flex;
     flex-direction: column;
     gap: var(--padding-small);
+}
+
+.create-button {
+    background-color: #48bb78;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.create-button:hover {
+    background-color: #38a169;
 }

@@ -48,7 +48,7 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
                     <button className="cancel-button" onClick={() => setShowCreateForm(false)}>Cancel</button>
                 </div>
             ) : (
-                <button onClick={() => setShowCreateForm(true)}>Create Task</button>
+                <button className="create-button" onClick={() => setShowCreateForm(true)}>Create Task</button>
             )}
         </div>
     );
