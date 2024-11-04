@@ -51,18 +51,36 @@ const Dashboard = () => {
     if (loading) {
         return <p>Loading data...</p>;
     } else
-    return (
-        <div>
-            <Navbar user={user} />
-            {Array.isArray(taskBoards) && taskBoards.length > 0 ? (
-                taskBoards.map((board) => (
-                    <TaskBoard key={board.id} board={board} />
-                ))
-            ) : (
-                <p>No task boards found.</p>
-            )}
-        </div>
-    );
+        return (
+            <div>
+                <Navbar user={user} />
+                {taskBoards.map((board) => (
+                    <TaskBoard key={board.id} board={board} user={user}/>
+                ))}
+
+                {/* Conditionally render footer if user is admin */}
+                {user && user.role === 'ADMIN' && (
+                    <footer className="taskboard-management-bar">
+                        <div className="board-filtering">
+                            <select>
+                                <option value="active">Active Boards</option>
+                                <option value="archived">Archived</option>
+                                <option value="highPriority">High Priority</option>
+                            </select>
+                        </div>
+                        <div className="board-settings">
+                            <button>Board Settings</button>
+                        </div>
+                        <div className="global-task-management">
+                            <button>Manage All Tasks</button>
+                        </div>
+                        <div className="board-statistics">
+                            <button>View Board Stats</button>
+                        </div>
+                    </footer>
+                )}
+            </div>
+        );
 };
 
 export default Dashboard;

@@ -5,11 +5,13 @@ import com.taskmanager.taskmanager.entities.TaskBoard;
 import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.services.TaskBoardService;
 import com.taskmanager.taskmanager.services.TaskService;
+import com.taskmanager.taskmanager.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,9 @@ public class TaskBoardController {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping
     public ResponseEntity<TaskBoard> createTaskBoard(@RequestBody TaskBoard taskBoard) {
@@ -71,6 +76,18 @@ public class TaskBoardController {
         Optional<TaskBoard> taskBoard = taskBoardService.getTaskBoardById(id);
         return taskBoard.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @PutMapping("/{boardId}")
+    public ResponseEntity<TaskBoard> updateTaskBoard(@PathVariable Long boardId, @RequestBody TaskBoard updatedBoard, Principal principal) {
+        User currentUser = userService.getUserByEmail(principal.getName());
+
+        if (currentUser.getRole().equals("ADMIN")) {
+            TaskBoard board = taskBoardService.updateTaskBoard(boardId, updatedBoard);
+            return ResponseEntity.ok(board);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @GetMapping("/creator/{createdBy}")
