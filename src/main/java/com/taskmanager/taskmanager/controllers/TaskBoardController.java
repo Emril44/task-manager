@@ -64,6 +64,7 @@ public class TaskBoardController {
                     map.put("status", task.getStatus());
                     map.put("priority", task.getPriority());
                     map.put("dueDate", task.getDueDate());
+                    map.put("assignedUserId", task.getAssignedUser() != null ? task.getAssignedUser().getId() : null); // Handle null case
                     return map;
                 })
                 .collect(Collectors.toList());

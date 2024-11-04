@@ -1,13 +1,28 @@
 package com.taskmanager.taskmanager.dtos;
 
+import com.taskmanager.taskmanager.entities.Task;
+
+import java.time.LocalDate;
+
 public class TaskDto {
     private Long id;
     private String title;
     private String description;
     private String status;
     private int priority;
+    private LocalDate dueDate;
     private Long taskBoardId;   // Only referencing the ID of the board
     private Long assignedUserId; // Only referencing the ID of the assigned user
+
+    public TaskDto(Task task) {
+        this.id = task.getId();
+        this.title = task.getTitle();
+        this.description = task.getDescription();
+        this.status = task.getStatus();
+        this.priority = task.getPriority();
+        this.dueDate = task.getDueDate();
+        this.assignedUserId = task.getAssignedUser() != null ? task.getAssignedUser().getId() : null;
+    }
 
     public Long getId() {
         return id;

@@ -15,7 +15,6 @@ const Dashboard = () => {
                 setLoading(true); // Start loading
 
                 const userId = localStorage.getItem('userId');
-                console.log(userId);
 
                 if (!userId) {
                     console.error("User ID not found, please log in again.");
@@ -24,17 +23,12 @@ const Dashboard = () => {
 
                 const userData = await api.getUser(userId);
                 const taskBoardData = await api.getTaskBoards();
-
-                // Fetch tasks for each board and attach them to the board data
                 const boardsWithTasks = await Promise.all(
                     taskBoardData.map(async (board) => {
                         const tasks = await api.getTasksByBoardId(board.id);
                         return { ...board, tasks }; // Add tasks to each board object
                     })
                 );
-
-                console.log(userData);
-                console.log(taskBoardData);
 
                 setUser(userData);
                 setTaskBoards(boardsWithTasks);
@@ -48,6 +42,24 @@ const Dashboard = () => {
         fetchData();
     }, []);
 
+    const handleDeleteTask = async (boardId, taskId) => {
+        try {
+            await api.deleteTask(taskId);
+            setTaskBoards((prevTaskBoards) =>
+                prevTaskBoards.map((board) =>
+                    board.id === boardId
+                        ? { ...board, tasks: board.tasks.filter(task => task.id !== taskId) }
+                        : board
+                )
+            );
+        } catch (error) {
+            console.error("Failed to delete task:", error);
+        }
+    };
+
+    console.log("User:", user);
+    console.log("TaskBoards:", taskBoards);
+
     if (loading) {
         return <p>Loading data...</p>;
     } else
@@ -55,7 +67,7 @@ const Dashboard = () => {
             <div>
                 <Navbar user={user} />
                 {taskBoards.map((board) => (
-                    <TaskBoard key={board.id} board={board} user={user}/>
+                    <TaskBoard key={board.id} board={board} user={user} onDeleteTask={handleDeleteTask}/>
                 ))}
 
                 {/* Conditionally render footer if user is admin */}

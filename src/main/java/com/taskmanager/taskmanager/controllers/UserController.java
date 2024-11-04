@@ -1,5 +1,6 @@
 package com.taskmanager.taskmanager.controllers;
 
+import com.taskmanager.taskmanager.dtos.UserDto;
 import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         Optional<User> user = userService.getUserById(id);
-        return user.map(ResponseEntity::ok)
+        return user.map(u -> ResponseEntity.ok(new UserDto(u)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }

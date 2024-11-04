@@ -2,8 +2,12 @@
 import React from 'react';
 import '../styles/Task.css'
 
-const Task = ({ task, user }) => {
+const Task = ({ task, user, onDelete }) => {
     const canEditTask = user.role === 'ADMIN' || task.assignedUserId === user.id;
+
+    console.log("User role:", user.role);
+    console.log("Task assignedUserId:", task.assignedUserId);
+    console.log("User ID:", user.id);
 
     return (
         <div className="task">
@@ -13,9 +17,11 @@ const Task = ({ task, user }) => {
             <p>Priority: {task.priority}</p>
             <p>Due Date: {new Date(task.dueDate).toLocaleDateString()}</p>
 
-            {/* Render "Edit Task" button if user has access */}
             {canEditTask && (
-                <button onClick={() => handleEditTask(task.id)}>Edit Task</button>
+                <>
+                    <button onClick={() => handleEditTask(task.id)}>Edit Task</button>
+                    <button onClick={() => onDelete(task.id)}>Delete Task</button>
+                </>
             )}
         </div>
     );

@@ -22,8 +22,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        System.out.println("Loaded user: " + user.getUsername());
-        System.out.println("Stored password hash: " + user.getPassword());  // Log the stored hash
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),  // Ensure this is the hashed password

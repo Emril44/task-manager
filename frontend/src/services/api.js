@@ -50,9 +50,30 @@ const getTasksByBoardId = async (boardId) => {
     }
 };
 
+// Create a new task
+export const createTask = async (boardId, taskData) => {
+    const response = await api.post(`/api/task_boards/${boardId}/tasks`, taskData);
+    return response.data;
+};
+
+// Update an existing task
+export const updateTask = async (taskId, taskData) => {
+    const response = await api.put(`/api/tasks/${taskId}`, taskData);
+    return response.data;
+};
+
+// Delete a task
+export const deleteTask = async (taskId) => {
+    const response = await api.delete(`/api/tasks/${taskId}`);
+    return response.data;
+};
+
 // Attach functions to the `api` instance
 api.getUser = getUser;
 api.getTaskBoards = getTaskBoards;
 api.getTasksByBoardId = getTasksByBoardId;
+api.createTask = createTask;
+api.updateTask = updateTask;
+api.deleteTask = deleteTask;
 
 export default api;

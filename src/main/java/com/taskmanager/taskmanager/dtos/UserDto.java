@@ -1,9 +1,17 @@
 package com.taskmanager.taskmanager.dtos;
 
+import com.taskmanager.taskmanager.entities.User;
+
 public class UserDto {
     private Long id;
     private String username;
     private String role;
+
+    public UserDto(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.role = user.getRole();
+    }
 
     public Long getId() {
         return id;
