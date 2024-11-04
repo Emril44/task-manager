@@ -3,6 +3,8 @@ package com.taskmanager.taskmanager.controllers;
 import com.taskmanager.taskmanager.entities.Task;
 import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.exceptions.TaskNotFoundException;
+import com.taskmanager.taskmanager.exceptions.UserNotFoundException;
+import com.taskmanager.taskmanager.services.TaskBoardService;
 import com.taskmanager.taskmanager.services.TaskService;
 import com.taskmanager.taskmanager.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -25,8 +29,27 @@ public class TaskController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private TaskBoardService taskBoardService;
+
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+    public ResponseEntity<Task> createTask(@RequestBody Map<String, Object> request) {
+        Long taskBoardId = ((Number) request.get("task_board_id")).longValue();
+        Long assignedUserId = ((Number) request.get("assigned_user")).longValue();
+
+        Task task = new Task();
+        task.setTitle((String) request.get("title"));
+        task.setDescription((String) request.get("description"));
+        task.setStatus((String) request.get("status"));
+        task.setPriority((Integer) request.get("priority"));
+        task.setDueDate(LocalDate.parse((String) request.get("due_date")));
+
+        // Fetch and assign TaskBoard and User entities based on provided IDs
+        task.setTaskBoard(taskBoardService.getTaskBoardById(taskBoardId)
+                .orElseThrow(() -> new TaskNotFoundException("TaskBoard not found")));
+        task.setAssignedUser(userService.getUserById(assignedUserId)
+                .orElseThrow(() -> new UserNotFoundException("User not found")));
+
         Task createdTask = taskService.createTask(task);
         return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
     }

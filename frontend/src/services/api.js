@@ -51,8 +51,10 @@ const getTasksByBoardId = async (boardId) => {
 };
 
 // Create a new task
-export const createTask = async (boardId, taskData) => {
-    const response = await api.post(`/api/task_boards/${boardId}/tasks`, taskData);
+export const createTask = async (taskData) => {
+    console.log(taskData);
+    const response = await api.post(`/api/tasks`, taskData);
+    console.log(response.data);
     return response.data;
 };
 

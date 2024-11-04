@@ -67,7 +67,7 @@ const Dashboard = () => {
             <div>
                 <Navbar user={user} />
                 {taskBoards.map((board) => (
-                    <TaskBoard key={board.id} board={board} user={user} onDeleteTask={handleDeleteTask}/>
+                    <TaskBoard key={board.id} board={board} user={user} onDeleteTask={handleDeleteTask} setTaskBoards={setTaskBoards}/>
                 ))}
 
                 {/* Conditionally render footer if user is admin */}
