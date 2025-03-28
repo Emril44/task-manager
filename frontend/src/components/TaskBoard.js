@@ -4,7 +4,7 @@ import api from '../services/api';
 import '../styles/TaskBoard.css'
 import EditBoardModal from "./EditBoardModal";
 
-const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTask, onUpdateTask }) => {
+const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTask, onUpdateTask, onUpdateBoard }) => {
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
 
@@ -14,13 +14,15 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
 
     const handleSaveBoard = async (boardId, updatedData) => {
         try {
-            await api.updateTaskBoard(boardId, updatedData);
+            const updatedBoard = await api.updateTaskBoard(boardId, updatedData);
+            // potentially refresh board after update
             setShowEditModal(false);
-            // refresh board data here if needed
+            onUpdateBoard();
+            console.log("Board updated:", updatedBoard);
         } catch (error) {
-            console.error("Error updating board: ", error);
+            console.error("Error updating board:", error);
         }
-    }
+    };
 
     const handleDeleteTask = (taskId) => onDeleteTask(board.id, taskId);
 

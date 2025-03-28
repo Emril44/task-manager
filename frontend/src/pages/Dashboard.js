@@ -29,16 +29,8 @@ const Dashboard = () => {
                 }
 
                 const userData = await api.getUser(userId);
-                const taskBoardData = await api.getTaskBoards();
-                const boardsWithTasks = await Promise.all(
-                    taskBoardData.map(async (board) => {
-                        const tasks = await api.getTasksByBoardId(board.id);
-                        return { ...board, tasks }; // Add tasks to each board object
-                    })
-                );
-
+                fetchBoards();
                 setUser(userData);
-                setTaskBoards(boardsWithTasks);
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
@@ -48,6 +40,21 @@ const Dashboard = () => {
 
         fetchData();
     }, []);
+
+    const fetchBoards = async () => {
+        try {
+            const taskBoardData = await api.getTaskBoards();
+            const boardsWithTasks = await Promise.all(
+                taskBoardData.map(async (board) => {
+                    const tasks = await api.getTasksByBoardId(board.id);
+                    return { ...board, tasks }; // Add tasks to each board object
+                })
+            );
+            setTaskBoards(boardsWithTasks);
+        } catch (err) {
+            console.error("Failed to refresh boards: ", err);
+        }
+    }
 
     const handleDeleteTask = async (boardId, taskId) => {
         try {
@@ -127,6 +134,7 @@ const Dashboard = () => {
                         onDeleteTask={handleDeleteTask}
                         onCreateTask={() => handleCreateTask(board.id)}
                         onUpdateTask={(taskId, updatedTaskData) => handleUpdateTask(taskId, updatedTaskData, board.id)}  // Pass board ID
+                        onUpdateBoard={fetchBoards}
                     />
                 ))}
 
