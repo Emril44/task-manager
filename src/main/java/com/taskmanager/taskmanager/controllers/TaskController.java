@@ -88,13 +88,14 @@ public class TaskController {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
+        User user = userService.getUserByEmail(username);
 
         // Retrieve the task to be updated
         Task task = taskService.getTaskById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException("Task not found"));
 
         // Optional: Check permissions - for example, only admins or assigned users can update the task
-        if (!task.getAssignedUser().getEmail().equals(username)) {
+        if (!task.getAssignedUser().getEmail().equals(username) && !user.getRole().equals("ADMIN")) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not authorized to update this task");
         }
 

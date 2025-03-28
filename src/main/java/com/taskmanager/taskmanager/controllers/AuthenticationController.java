@@ -68,7 +68,8 @@ public class AuthenticationController {
             // Generate the JWT token with essential claims
             String token = Jwts.builder()
                     .setSubject(userDetails.getUsername()) // Set 'sub' as email or username
-                    .claim("userId", user.getId()) // Optional: Include custom claims like user ID
+                    .claim("userId", user.getId())
+                    .claim("role", user.getRole())
                     .setIssuedAt(new Date()) // Set the 'iat' (issued at)
                     .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // Set 'exp' (e.g., 24 hrs)
                     .signWith(SignatureAlgorithm.HS256, jwtSecret.getBytes()) // Sign with secret

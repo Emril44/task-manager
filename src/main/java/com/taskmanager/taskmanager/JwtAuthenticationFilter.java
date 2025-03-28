@@ -48,12 +48,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 String username = claims.getSubject();
                 Long userId = claims.get("userId", Long.class);
+                String userRole = claims.get("role", String.class); // extract admin role
+
+                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(userRole));
 
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     // Create a UserDetails object with the username and authorities
                     UserDetails userDetails = User.withUsername(username)
                             .password("")  // Password is not used here, so it can be an empty string
-                            .authorities(new ArrayList<>())  // Add authorities if needed
+                            .authorities(authorities)  // Add authorities if needed
                             .build();
 
                     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
