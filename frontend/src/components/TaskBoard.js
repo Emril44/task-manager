@@ -1,11 +1,26 @@
-// src/components/TaskBoard.js
 import React, {useState} from 'react';
 import Task from './Task';
 import api from '../services/api';
 import '../styles/TaskBoard.css'
+import EditBoardModal from "./EditBoardModal";
 
 const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTask, onUpdateTask }) => {
     const [showCreateForm, setShowCreateForm] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+
+    const handleEditBoard = () => {
+        setShowEditModal(true);
+    }
+
+    const handleSaveBoard = async (boardId, updatedData) => {
+        try {
+            await api.updateTaskBoard(boardId, updatedData);
+            setShowEditModal(false);
+            // refresh board data here if needed
+        } catch (error) {
+            console.error("Error updating board: ", error);
+        }
+    }
 
     const handleDeleteTask = (taskId) => onDeleteTask(board.id, taskId);
 
@@ -17,6 +32,14 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
             {/* Admins see "Edit Board" button */}
             {user.role === 'ADMIN' && (
                 <button onClick={() => handleEditBoard(board.id)}>Edit Board</button>
+            )}
+
+            {showEditModal && (
+                <EditBoardModal
+                board={board}
+                onClose={() => setShowEditModal(false)}
+                onSave={handleSaveBoard}
+                />
             )}
 
             {/* Render tasks */}
@@ -58,11 +81,6 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
             )}
         </div>
     );
-};
-// Placeholder for Edit Board handler function
-const handleEditBoard = (boardId) => {
-    console.log("Edit board with ID:", boardId);
-    // Implement board editing logic here
 };
 
 export default TaskBoard;
