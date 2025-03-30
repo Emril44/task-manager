@@ -3,10 +3,12 @@ import Navbar from '../components/Navbar';
 import TaskBoard from '../components/TaskBoard';
 import api from '../services/api';
 import '../styles/Dashboard.css'
+import CreateBoardModal from "../components/CreateBoardModal";
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
     const [taskBoards, setTaskBoards] = useState([]);
+    const [showCreateBoard, setShowCreateBoard] = useState(false);
     const [loading, setLoading] = useState(true); // New loading state
     const [newTask, setNewTask] = useState({
         title: '',
@@ -97,6 +99,15 @@ const Dashboard = () => {
         }
     };
 
+    const handleCreateBoard = async (formData) => {
+        try {
+            await api.createTaskBoard(formData);
+            await fetchBoards(); // Refresh
+        } catch (error) {
+            console.error("Failed to create board:", error);
+        }
+    };
+
     const handleUpdateTask = async (taskId, updatedTaskData, boardId) => {
         try {
             const updatedTask = await api.updateTask(taskId, updatedTaskData);
@@ -124,6 +135,15 @@ const Dashboard = () => {
         return (
             <div>
                 <Navbar user={user} />
+                {user && user.role === 'ADMIN' && (
+                    <button onClick={() => setShowCreateBoard(true)}>+ New Board</button>
+                )}
+                {showCreateBoard && (
+                    <CreateBoardModal
+                        onClose={() => setShowCreateBoard(false)}
+                        onSave={handleCreateBoard} // We'll write this below
+                    />
+                )}
                 {taskBoards.map((board) => (
                     <TaskBoard
                         key={board.id}

@@ -32,7 +32,13 @@ public class TaskBoardController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<TaskBoard> createTaskBoard(@RequestBody TaskBoard taskBoard) {
+    public ResponseEntity<TaskBoard> createTaskBoard(@RequestBody TaskBoard taskBoard, Principal principal) {
+        User currentUser = userService.getUserByEmail(principal.getName());
+
+        if (!currentUser.getRole().equals("ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         TaskBoard createdTaskBoard = taskBoardService.createTaskBoard(taskBoard);
         return new ResponseEntity<>(createdTaskBoard, HttpStatus.CREATED);
     }

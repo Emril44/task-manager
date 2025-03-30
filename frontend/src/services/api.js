@@ -51,6 +51,16 @@ const getTasksByBoardId = async (boardId) => {
     }
 };
 
+export const createTaskBoard = async (boardData) => {
+    const token = localStorage.getItem('authToken');
+    const response = await api.post('/api/task_boards', boardData, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+};
+
 export const updateTaskBoard = async (boardId, boardData) => {
     const token = localStorage.getItem('authToken');
     const response = await api.put(`/api/task_boards/${boardId}`, boardData, {
@@ -87,5 +97,6 @@ api.createTask = createTask;
 api.updateTask = updateTask;
 api.deleteTask = deleteTask;
 api.updateTaskBoard = updateTaskBoard;
+api.createTaskBoard = createTaskBoard;
 
 export default api;

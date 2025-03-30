@@ -42,7 +42,7 @@ const Task = ({ task, user, onDelete, onUpdate }) => {
                 )}</span>
             </div>
             <div className="task-content">
-                <p>Description: {isEditing ? (
+                <p>{isEditing ? (
                     <textarea
                         name="description"
                         value={editedTask.description || ''}
