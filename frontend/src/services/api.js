@@ -71,15 +71,18 @@ export const updateTaskBoard = async (boardId, boardData) => {
     return response.data;
 };
 
+export const deleteBoard = async (id) => {
+    const res = await api.delete(`/api/task_boards/${id}`);
+    return res.data;
+};
+
 export const getActiveBoards = async () => {
     const response = await api.get('/api/task_boards/active');
-    console.log('response data from api: ', response.data);
     return response.data;
 };
 
 export const getArchivedBoards = async () => {
     const response = await api.get('/api/task_boards/archived');
-    console.log('response data from api: ', response.data);
     return response.data;
 };
 
@@ -118,5 +121,6 @@ api.createTaskBoard = createTaskBoard;
 api.archiveBoard = archiveBoard;
 api.getActiveBoards = getActiveBoards;
 api.getArchivedBoards = getArchivedBoards;
+api.deleteBoard = deleteBoard;
 
 export default api;

@@ -4,7 +4,7 @@ import api from '../services/api';
 import '../styles/TaskBoard.css'
 import EditBoardModal from "./EditBoardModal";
 
-const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTask, onUpdateTask, onUpdateBoard }) => {
+const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTask, onUpdateTask, onUpdateBoard, onDeleteBoard }) => {
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
 
@@ -25,6 +25,17 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
     };
 
     const handleDeleteTask = (taskId) => onDeleteTask(board.id, taskId);
+
+    const handleDeleteBoard = async (id) => {
+        if (!window.confirm("Are you sure you want to permanently delete this board?")) return;
+
+        try {
+            await api.deleteBoard(id);
+            onDeleteBoard(id);  // Prop from Dashboard to update local state
+        } catch (err) {
+            console.error("Board deletion failed:", err);
+        }
+    };
 
     return (
         <div className="task-board">
@@ -80,6 +91,11 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
                 </div>
             ) : (
                 <button className="create-button" onClick={() => setShowCreateForm(true)}>Create Task</button>
+            )}
+            {user.role === 'ADMIN' && Boolean(board.archived) && (
+                <button className="delete-button" onClick={() => handleDeleteBoard(board.id)}>
+                    Delete Board
+                </button>
             )}
         </div>
     );

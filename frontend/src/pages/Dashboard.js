@@ -157,6 +157,10 @@ const Dashboard = () => {
         }
     };
 
+    const handleDeleteBoard = (boardId) => {
+        setTaskBoards((prevBoards) => prevBoards.filter(board => board.id !== boardId));
+    };
+
     if (!user) {
         return <p>Loading data...</p>;
     } else
@@ -183,6 +187,7 @@ const Dashboard = () => {
                         onCreateTask={() => handleCreateTask(board.id)}
                         onUpdateTask={(taskId, updatedTaskData) => handleUpdateTask(taskId, updatedTaskData, board.id)}  // Pass board ID
                         onUpdateBoard={fetchBoards}
+                        onDeleteBoard={handleDeleteBoard}
                     />
                 ))}
 

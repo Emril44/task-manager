@@ -77,6 +77,7 @@ public class TaskBoardService {
                         ? board.getTasks().stream().map(Task::getId).collect(Collectors.toList())
                         : new ArrayList<>()
         );
+        dto.setArchived(board.isArchived());
         return dto;
     }
 }

@@ -43,10 +43,10 @@ public class TaskBoard {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     // Getters and setters
+
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -111,7 +111,7 @@ public class TaskBoard {
         this.archived = true;
     }
 
-    public boolean getArchived() {
-        return this.archived;
+    public boolean isArchived() {
+        return archived;
     }
 }

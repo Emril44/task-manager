@@ -9,6 +9,8 @@ public class TaskBoardDto {
     private Long createdBy;
     private List<Long> taskIds; // Only references to task IDs
 
+    private boolean archived;
+
     // Getters and setters
 
     public Long getId() {
@@ -50,4 +52,7 @@ public class TaskBoardDto {
     public void setTaskIds(List<Long> taskIds) {
         this.taskIds = taskIds;
     }
+
+    public boolean isArchived() { return archived; }
+    public void setArchived(boolean archived) { this.archived = archived; }
 }

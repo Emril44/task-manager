@@ -53,7 +53,7 @@ public class TaskBoardController {
                     map.put("id", board.getId());
                     map.put("name", board.getName());
                     map.put("description", board.getDescription());
-                    map.put("archived", board.getArchived());
+                    map.put("archived", board.isArchived());
                     return map;
                 })
                 .collect(Collectors.toList());
@@ -141,8 +141,12 @@ public class TaskBoardController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTaskBoard(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTaskBoard(@PathVariable Long id, Principal principal) {
+        User user = userService.getUserByEmail(principal.getName());
+        if (!user.getRole().equals("ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         taskBoardService.deleteTaskBoard(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }
