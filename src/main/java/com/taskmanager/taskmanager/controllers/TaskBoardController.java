@@ -1,5 +1,6 @@
 package com.taskmanager.taskmanager.controllers;
 
+import com.taskmanager.taskmanager.dtos.TaskBoardDto;
 import com.taskmanager.taskmanager.entities.Task;
 import com.taskmanager.taskmanager.entities.TaskBoard;
 import com.taskmanager.taskmanager.entities.User;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -51,6 +53,7 @@ public class TaskBoardController {
                     map.put("id", board.getId());
                     map.put("name", board.getName());
                     map.put("description", board.getDescription());
+                    map.put("archived", board.getArchived());
                     return map;
                 })
                 .collect(Collectors.toList());
@@ -104,14 +107,39 @@ public class TaskBoardController {
     }
 
     @GetMapping("/active")
-    public List<TaskBoard> getActiveBoards() {
-        return taskBoardService.getBoardsByArchived(false);
+    public ResponseEntity<List<TaskBoardDto>> getActiveBoards() {
+        List<TaskBoardDto> dtos = taskBoardService.getBoardsByArchived(false)
+                .stream()
+                .map(board -> taskBoardService.convertToDto(board))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/archived")
-    public List<TaskBoard> getArchivedBoards() {
-        return taskBoardService.getBoardsByArchived(true);
+    public ResponseEntity<List<TaskBoardDto>> getArchivedBoards() {
+        List<TaskBoardDto> dtos = taskBoardService.getBoardsByArchived(true)
+                .stream()
+                .map(board -> taskBoardService.convertToDto(board))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
+
+    @PutMapping("/{boardId}/archive")
+    public ResponseEntity<TaskBoard> archiveBoard(@PathVariable Long boardId, @RequestParam boolean archived, Principal principal) {
+        User currentUser = userService.getUserByEmail(principal.getName());
+
+        if (!"ADMIN".equals(currentUser.getRole())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        TaskBoard board = taskBoardService.getTaskBoardById(boardId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Board not found"));
+
+        board.setArchived(archived);
+        TaskBoard updated = taskBoardService.saveBoard(board);
+        return ResponseEntity.ok(updated);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTaskBoard(@PathVariable Long id) {
         taskBoardService.deleteTaskBoard(id);

@@ -22,13 +22,9 @@ const EditBoardModal = ({ board, onClose, onSave }) => {
     }
 
     function handleArchiveBoard(id) {
-        const updatedData = {
-            ...formData,
-            archived: true
-        };
-        api.archiveBoard(id, updatedData)
+        api.archiveBoard(id, true)
             .then(() => {
-                onSave(id, updatedData); // Trigger local update in UI
+                onSave(id, { ...formData, archived: true }); // Optional: reflect in UI
                 onClose();
             })
             .catch((err) => {

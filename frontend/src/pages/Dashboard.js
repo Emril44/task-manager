@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Navbar from '../components/Navbar';
 import TaskBoard from '../components/TaskBoard';
 import api from '../services/api';
@@ -17,6 +17,7 @@ const Dashboard = () => {
         priority: 1,
         dueDate: '',
     });
+    const [filter, setFilter] = useState('ALL'); // ALL, ACTIVE, ARCHIVED
 
     useEffect(() => {
         const fetchData = async () => {
@@ -129,6 +130,33 @@ const Dashboard = () => {
         }
     };
 
+    const handleFilterChange = async (e) => {
+        const selected = e.target.value;
+        setFilter(selected);
+
+        try {
+            let boards = [];
+            if (selected === 'ACTIVE') {
+                boards = await api.getActiveBoards();
+            } else if (selected === 'ARCHIVED') {
+                boards = await api.getArchivedBoards();
+            } else {
+                boards = await api.getTaskBoards();
+            }
+
+            const boardsWithTasks = await Promise.all(
+                boards.map(async (board) => {
+                    const tasks = await api.getTasksByBoardId(board.id);
+                    return { ...board, tasks };
+                })
+            );
+
+            setTaskBoards(boardsWithTasks);
+        } catch (err) {
+            console.error("Filtering boards failed:", err);
+        }
+    };
+
     if (!user) {
         return <p>Loading data...</p>;
     } else
@@ -141,7 +169,7 @@ const Dashboard = () => {
                 {showCreateBoard && (
                     <CreateBoardModal
                         onClose={() => setShowCreateBoard(false)}
-                        onSave={handleCreateBoard} // We'll write this below
+                        onSave={handleCreateBoard}
                     />
                 )}
                 {taskBoards.map((board) => (
@@ -162,10 +190,10 @@ const Dashboard = () => {
                 {user && user.role === 'ADMIN' && (
                     <footer className="taskboard-management-bar">
                         <div className="board-filtering">
-                            <select>
-                                <option value="active">Active Boards</option>
-                                <option value="archived">Archived</option>
-                                <option value="highPriority">High Priority</option>
+                            <select value={filter} onChange={handleFilterChange}>
+                                <option value="ALL">All Boards</option>
+                                <option value="ACTIVE">Active Boards</option>
+                                <option value="ARCHIVED">Archived Boards</option>
                             </select>
                         </div>
                         <div className="board-settings">

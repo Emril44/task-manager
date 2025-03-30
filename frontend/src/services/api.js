@@ -71,13 +71,20 @@ export const updateTaskBoard = async (boardId, boardData) => {
     return response.data;
 };
 
-export const getBoardsByArchived = async (archived) => {
-    const response = await api.get(`/api/task_boards/${archived ? 'archived' : 'active'}`);
+export const getActiveBoards = async () => {
+    const response = await api.get('/api/task_boards/active');
+    console.log('response data from api: ', response.data);
     return response.data;
 };
 
-export const archiveBoard = async (boardId, data) => {
-    const response = await api.put(`/api/task_boards/${boardId}`, data);
+export const getArchivedBoards = async () => {
+    const response = await api.get('/api/task_boards/archived');
+    console.log('response data from api: ', response.data);
+    return response.data;
+};
+
+export const archiveBoard = async (boardId, archived) => {
+    const response = await api.put(`/api/task_boards/${boardId}/archive?archived=${archived}`);
     return response.data;
 };
 
@@ -109,5 +116,7 @@ api.deleteTask = deleteTask;
 api.updateTaskBoard = updateTaskBoard;
 api.createTaskBoard = createTaskBoard;
 api.archiveBoard = archiveBoard;
+api.getActiveBoards = getActiveBoards;
+api.getArchivedBoards = getArchivedBoards;
 
 export default api;

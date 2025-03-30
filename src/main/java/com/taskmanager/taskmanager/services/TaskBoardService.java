@@ -1,5 +1,7 @@
 package com.taskmanager.taskmanager.services;
 
+import com.taskmanager.taskmanager.dtos.TaskBoardDto;
+import com.taskmanager.taskmanager.entities.Task;
 import com.taskmanager.taskmanager.entities.TaskBoard;
 import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.exceptions.TaskBoardNotFoundException;
@@ -8,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskBoardService {
@@ -56,6 +60,24 @@ public class TaskBoardService {
 
     public List<TaskBoard> getBoardsByArchived(boolean archived) {
         return taskBoardRepository.findByArchived(archived);
+    }
+
+    public TaskBoard saveBoard(TaskBoard board) {
+        return taskBoardRepository.save(board);
+    }
+
+    public TaskBoardDto convertToDto(TaskBoard board) {
+        TaskBoardDto dto = new TaskBoardDto();
+        dto.setId(board.getId());
+        dto.setName(board.getName());
+        dto.setDescription(board.getDescription());
+        dto.setCreatedBy(board.getCreatedBy() != null ? board.getCreatedBy().getId() : null);
+        dto.setTaskIds(
+                board.getTasks() != null
+                        ? board.getTasks().stream().map(Task::getId).collect(Collectors.toList())
+                        : new ArrayList<>()
+        );
+        return dto;
     }
 }
 

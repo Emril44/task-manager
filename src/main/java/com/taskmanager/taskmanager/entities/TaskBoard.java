@@ -34,7 +34,7 @@ public class TaskBoard {
     private Set<User> users;
 
     @Column(nullable = false)
-    private Boolean archived = false;
+    private boolean archived = false;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -105,5 +105,13 @@ public class TaskBoard {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = true;
+    }
+
+    public boolean getArchived() {
+        return this.archived;
     }
 }
