@@ -12,4 +12,6 @@ public interface TaskBoardRepository extends JpaRepository<TaskBoard, Long> {
 
     // Find a task board by its name
     TaskBoard findByName(String name);
+
+    List<TaskBoard> findByArchived(boolean archived);
 }

@@ -103,6 +103,15 @@ public class TaskBoardController {
         return ResponseEntity.ok(taskBoards);
     }
 
+    @GetMapping("/active")
+    public List<TaskBoard> getActiveBoards() {
+        return taskBoardService.getBoardsByArchived(false);
+    }
+
+    @GetMapping("/archived")
+    public List<TaskBoard> getArchivedBoards() {
+        return taskBoardService.getBoardsByArchived(true);
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTaskBoard(@PathVariable Long id) {
         taskBoardService.deleteTaskBoard(id);

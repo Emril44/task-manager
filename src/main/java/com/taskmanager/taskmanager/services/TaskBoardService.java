@@ -49,10 +49,13 @@ public class TaskBoardService {
         // Update fields as necessary
         existingBoard.setName(updatedBoard.getName());
         existingBoard.setDescription(updatedBoard.getDescription());
-        // Add other fields you want to update
 
         // Save the updated task board back to the database
         return taskBoardRepository.save(existingBoard);
+    }
+
+    public List<TaskBoard> getBoardsByArchived(boolean archived) {
+        return taskBoardRepository.findByArchived(archived);
     }
 }
 

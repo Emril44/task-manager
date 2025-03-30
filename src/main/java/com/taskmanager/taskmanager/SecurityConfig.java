@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter("whatamidoiiiiiiiiiiing04040404040404"),
                         UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));

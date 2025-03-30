@@ -33,6 +33,9 @@ public class TaskBoard {
     )
     private Set<User> users;
 
+    @Column(nullable = false)
+    private Boolean archived = false;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 

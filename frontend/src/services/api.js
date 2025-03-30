@@ -71,6 +71,16 @@ export const updateTaskBoard = async (boardId, boardData) => {
     return response.data;
 };
 
+export const getBoardsByArchived = async (archived) => {
+    const response = await api.get(`/api/task_boards/${archived ? 'archived' : 'active'}`);
+    return response.data;
+};
+
+export const archiveBoard = async (boardId, data) => {
+    const response = await api.put(`/api/task_boards/${boardId}`, data);
+    return response.data;
+};
+
 // Create a new task
 export const createTask = async (taskData) => {
     const response = await api.post(`/api/tasks`, taskData);
@@ -98,5 +108,6 @@ api.updateTask = updateTask;
 api.deleteTask = deleteTask;
 api.updateTaskBoard = updateTaskBoard;
 api.createTaskBoard = createTaskBoard;
+api.archiveBoard = archiveBoard;
 
 export default api;
