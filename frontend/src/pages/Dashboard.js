@@ -189,24 +189,9 @@ const Dashboard = () => {
                         onSave={handleCreateBoard}
                     />
                 )}
-                {taskBoards.map((board) => (
-                    <TaskBoard
-                        key={board.id}
-                        board={board}
-                        user={user}
-                        newTask={newTask}
-                        setNewTask={setNewTask}
-                        onDeleteTask={handleDeleteTask}
-                        onCreateTask={() => handleCreateTask(board.id)}
-                        onUpdateTask={(taskId, updatedTaskData) => handleUpdateTask(taskId, updatedTaskData, board.id)}  // Pass board ID
-                        onUpdateBoard={fetchBoards}
-                        onDeleteBoard={handleDeleteBoard}
-                    />
-                ))}
-
                 {/* Conditionally render footer if user is admin */}
                 {user && user.role === 'ADMIN' && (
-                    <footer className="taskboard-management-bar">
+                    <div className="taskboard-management-bar">
                         <div className="board-filtering">
                             <select value={filter} onChange={handleFilterChange}>
                                 <option value="ALL">All Boards</option>
@@ -227,11 +212,22 @@ const Dashboard = () => {
                                 />
                             )}
                         </div>
-                        <div className="board-statistics">
-                            <button>View Board Stats</button>
-                        </div>
-                    </footer>
+                    </div>
                 )}
+                {taskBoards.map((board) => (
+                    <TaskBoard
+                        key={board.id}
+                        board={board}
+                        user={user}
+                        newTask={newTask}
+                        setNewTask={setNewTask}
+                        onDeleteTask={handleDeleteTask}
+                        onCreateTask={() => handleCreateTask(board.id)}
+                        onUpdateTask={(taskId, updatedTaskData) => handleUpdateTask(taskId, updatedTaskData, board.id)}  // Pass board ID
+                        onUpdateBoard={fetchBoards}
+                        onDeleteBoard={handleDeleteBoard}
+                    />
+                ))}
             </div>
         );
 };
