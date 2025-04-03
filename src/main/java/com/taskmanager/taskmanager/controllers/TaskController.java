@@ -130,4 +130,28 @@ public class TaskController {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{taskId}/assign")
+    public ResponseEntity<?> assignTaskToUser(@PathVariable Long taskId, @RequestBody Map<String, Long> request, Principal principal) {
+        Long userId = request.get("userId");
+        User admin = userService.getUserByEmail(principal.getName());
+
+        if (!admin.getRole().equals("ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admins can reassign tasks.");
+        }
+
+        Task task = taskService.getTaskById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("Task not found"));
+
+        Optional<User> targetUserOpt = userService.getUserById(userId);
+        if (targetUserOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        task.setAssignedUser(targetUserOpt.get());
+        taskService.saveTask(task);
+
+        return ResponseEntity.ok("User assigned successfully");
+    }
+
 }

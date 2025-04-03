@@ -5,7 +5,7 @@ import '../styles/TaskBoard.css'
 import EditBoardModal from "./EditBoardModal";
 import BoardStatsModal from "./BoardStatsModal";
 
-const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTask, onUpdateTask, onUpdateBoard, onDeleteBoard }) => {
+const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTask, onUpdateTask, onUpdateBoard, onDeleteBoard, allUsers }) => {
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showStatsModal, setShowStatsModal] = useState(false);
@@ -85,6 +85,7 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
                         user={user}
                         onDelete={handleDeleteTask}
                         onUpdate={onUpdateTask} // Pass onUpdateTask as a prop
+                        allUsers={allUsers}
                     />
                 ))}
             </div>

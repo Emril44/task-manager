@@ -1,8 +1,9 @@
 // src/components/Task.js
 import React, {useState} from 'react';
 import '../styles/Task.css'
+import api from "../services/api";
 
-const Task = ({ task, user, onDelete, onUpdate }) => {
+const Task = ({ task, user, onDelete, onUpdate, allUsers }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedTask, setEditedTask] = useState({ ...task });
 
@@ -18,9 +19,21 @@ const Task = ({ task, user, onDelete, onUpdate }) => {
         }));
     };
 
-    const handleSave = () => {
-        onUpdate(task.id, editedTask); // Call the onUpdate prop to update the task
-        setIsEditing(false);
+    const handleSave = async () => {
+        try {
+            if (
+                user.role === 'ADMIN' &&
+                editedTask.assignedUserId &&
+                editedTask.assignedUserId !== task.assignedUserId
+            ) {
+                await api.assignUserToTask(task.id, editedTask.assignedUserId);
+            }
+
+            await onUpdate(task.id, editedTask);
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Failed to save task or assign user:", error);
+        }
     };
 
     const convertPriority = (priority) => {
@@ -91,6 +104,28 @@ const Task = ({ task, user, onDelete, onUpdate }) => {
                 ) : (
                     task.status
                 )}</span>
+                {user.role === 'ADMIN' && (
+                    <div className="task-assign-user">
+                        <label htmlFor="assign-user">Assigned to user:</label>
+                        <select
+                            id="assign-user"
+                            value={editedTask.assignedUserId || ''}
+                            onChange={(e) =>
+                                setEditedTask({
+                                    ...editedTask,
+                                    assignedUserId: parseInt(e.target.value),
+                                })
+                            }
+                        >
+                            <option value="">-- Select User --</option>
+                            {allUsers.map((user) => (
+                                <option key={user.id} value={user.id}>
+                                    {user.email}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                )}
             </div>
             <div className="task-actions">
                 {canEditTask && (

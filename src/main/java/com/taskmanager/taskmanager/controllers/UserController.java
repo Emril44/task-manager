@@ -30,4 +30,10 @@ public class UserController {
         return user.map(u -> ResponseEntity.ok(new UserDto(u)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> users = userService.getAllUserDtos();
+        return ResponseEntity.ok(users);
+    }
 }

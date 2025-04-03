@@ -21,11 +21,16 @@ const Dashboard = () => {
     const [filter, setFilter] = useState('ALL'); // ALL, ACTIVE, ARCHIVED
     const [showGlobalStats, setShowGlobalStats] = useState(false);
     const [globalStats, setGlobalStats] = useState(null);
+    const [allUsers, setAllUsers] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setLoading(true); // Start loading
+
+                const res = await api.getAllUsers();
+                console.log("Fetched users:", res);
+                setAllUsers(res);
 
                 const userId = localStorage.getItem('userId');
 
@@ -199,8 +204,8 @@ const Dashboard = () => {
                                 <option value="ARCHIVED">Archived Boards</option>
                             </select>
                         </div>
-                        <div className="board-settings">
-                            <button>Board Settings</button>
+                        <div className="user-management">
+                            <button>User Management</button>
                         </div>
                         <div className="global-task-management">
                             <button onClick={handleShowGlobalStats}>View Global Board Stats</button>
@@ -226,6 +231,7 @@ const Dashboard = () => {
                         onUpdateTask={(taskId, updatedTaskData) => handleUpdateTask(taskId, updatedTaskData, board.id)}  // Pass board ID
                         onUpdateBoard={fetchBoards}
                         onDeleteBoard={handleDeleteBoard}
+                        allUsers={allUsers}
                     />
                 ))}
             </div>

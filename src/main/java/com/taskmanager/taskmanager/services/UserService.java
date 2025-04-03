@@ -1,5 +1,6 @@
 package com.taskmanager.taskmanager.services;
 
+import com.taskmanager.taskmanager.dtos.UserDto;
 import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.repositories.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -50,5 +52,11 @@ public class UserService {
     }
 
     public User getUserByEmail(String username) {return userRepository.findByEmail(username);
+    }
+
+    public List<UserDto> getAllUserDtos() {
+        return userRepository.findAll().stream()
+                .map(user -> new UserDto(user.getId(), user.getEmail()))
+                .collect(Collectors.toList());
     }
 }

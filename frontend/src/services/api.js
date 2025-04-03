@@ -41,6 +41,11 @@ const getTaskBoards = async () => {
     }
 };
 
+const getAllUsers = async () => {
+    const res = await api.get('/api/users');
+    return res.data;
+};
+
 const getTasksByBoardId = async (boardId) => {
     try {
         const { data } = await api.get(`/api/task_boards/${boardId}/tasks`);
@@ -119,6 +124,11 @@ const getGlobalStats = async () => {
     return response.data;
 };
 
+const assignUserToTask = async (taskId, userId) => {
+    const response = await api.put(`/api/tasks/${taskId}/assign`, { userId });
+    return response.data;
+};
+
 // Attach functions to the `api` instance
 api.getUser = getUser;
 api.getTaskBoards = getTaskBoards;
@@ -134,5 +144,7 @@ api.getArchivedBoards = getArchivedBoards;
 api.deleteBoard = deleteBoard;
 api.getBoardStats = getBoardStats;
 api.getGlobalStats = getGlobalStats;
+api.assignUserToTask = assignUserToTask;
+api.getAllUsers = getAllUsers;
 
 export default api;
