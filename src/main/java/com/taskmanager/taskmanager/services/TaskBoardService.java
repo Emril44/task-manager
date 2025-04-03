@@ -133,5 +133,40 @@ public class TaskBoardService {
 
         return stats;
     }
+
+    @Transactional
+    public TaskBoardStatsDto getGlobalStats() {
+        List<TaskBoard> allBoards = taskBoardRepository.findAll();
+
+        TaskBoardStatsDto stats = new TaskBoardStatsDto();
+        int total = 0, notStarted = 0, inProgress = 0, completed = 0;
+        int low = 0, medium = 0, high = 0;
+
+        for (TaskBoard board : allBoards) {
+            for (Task task : board.getTasks()) {
+                total++;
+                switch (task.getStatus().toLowerCase()) {
+                    case "not started" -> notStarted++;
+                    case "in progress" -> inProgress++;
+                    case "completed" -> completed++;
+                }
+                switch (task.getPriority()) {
+                    case 1 -> low++;
+                    case 2 -> medium++;
+                    case 3 -> high++;
+                }
+            }
+        }
+
+        stats.setTotalTasks(total);
+        stats.setNotStarted(notStarted);
+        stats.setInProgress(inProgress);
+        stats.setCompleted(completed);
+        stats.setLowPriority(low);
+        stats.setMediumPriority(medium);
+        stats.setHighPriority(high);
+
+        return stats;
+    }
 }
 

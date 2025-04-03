@@ -155,4 +155,9 @@ public class TaskBoardController {
     public ResponseEntity<TaskBoardStatsDto> getBoardStats(@PathVariable Long id) {
         return ResponseEntity.ok(taskBoardService.getStatsForBoard(id));
     }
+
+    @GetMapping("/stats/global")
+    public ResponseEntity<TaskBoardStatsDto> getGlobalStats() {
+        return ResponseEntity.ok(taskBoardService.getGlobalStats());
+    }
 }

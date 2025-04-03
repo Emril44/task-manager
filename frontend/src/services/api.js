@@ -114,6 +114,11 @@ const getBoardStats = async (boardId) => {
     return response.data;
 };
 
+const getGlobalStats = async () => {
+    const response = await api.get('/api/task_boards/stats/global');
+    return response.data;
+};
+
 // Attach functions to the `api` instance
 api.getUser = getUser;
 api.getTaskBoards = getTaskBoards;
@@ -128,5 +133,6 @@ api.getActiveBoards = getActiveBoards;
 api.getArchivedBoards = getArchivedBoards;
 api.deleteBoard = deleteBoard;
 api.getBoardStats = getBoardStats;
+api.getGlobalStats = getGlobalStats;
 
 export default api;

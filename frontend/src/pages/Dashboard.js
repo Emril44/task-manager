@@ -4,6 +4,7 @@ import TaskBoard from '../components/TaskBoard';
 import api from '../services/api';
 import '../styles/Dashboard.css'
 import CreateBoardModal from "../components/CreateBoardModal";
+import BoardStatsModal from "../components/BoardStatsModal";
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -18,6 +19,8 @@ const Dashboard = () => {
         dueDate: '',
     });
     const [filter, setFilter] = useState('ALL'); // ALL, ACTIVE, ARCHIVED
+    const [showGlobalStats, setShowGlobalStats] = useState(false);
+    const [globalStats, setGlobalStats] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -161,6 +164,16 @@ const Dashboard = () => {
         setTaskBoards((prevBoards) => prevBoards.filter(board => board.id !== boardId));
     };
 
+    const handleShowGlobalStats = async () => {
+        try {
+            const data = await api.getGlobalStats();
+            setGlobalStats(data);
+            setShowGlobalStats(true);
+        } catch (e) {
+            console.error("Failed to fetch global stats", e);
+        }
+    };
+
     if (!user) {
         return <p>Loading data...</p>;
     } else
@@ -205,7 +218,14 @@ const Dashboard = () => {
                             <button>Board Settings</button>
                         </div>
                         <div className="global-task-management">
-                            <button>Manage All Tasks</button>
+                            <button onClick={handleShowGlobalStats}>View Global Board Stats</button>
+                            {showGlobalStats && (
+                                <BoardStatsModal
+                                    boardId={null}  // not needed
+                                    onClose={() => setShowGlobalStats(false)}
+                                    statsOverride={globalStats}  // custom prop
+                                />
+                            )}
                         </div>
                         <div className="board-statistics">
                             <button>View Board Stats</button>

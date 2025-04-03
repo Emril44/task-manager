@@ -8,13 +8,13 @@ import '../styles/BoardStatsModal.css';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
 
-const BoardStatsModal = ({ boardId, onClose }) => {
-    const [stats, setStats] = useState(null);
-    const [loading, setLoading] = useState(true);
+const BoardStatsModal = ({ boardId, onClose, statsOverride }) => {
+    const [stats, setStats] = useState(statsOverride || null);
+    const [loading, setLoading] = useState(!statsOverride);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (!boardId) return;
+        if (statsOverride || !boardId) return;
         const fetchStats = async () => {
             try {
                 const data = await api.getBoardStats(boardId);
@@ -25,9 +25,8 @@ const BoardStatsModal = ({ boardId, onClose }) => {
                 setLoading(false);
             }
         };
-
         fetchStats();
-    }, [boardId]);
+    }, [boardId, statsOverride]);
 
     const statusData = stats ? [
         { name: 'Not Started', value: stats.notStarted },
