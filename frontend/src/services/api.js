@@ -109,6 +109,11 @@ const deleteTask = async (taskId) => {
     return response.data;
 };
 
+const getBoardStats = async (boardId) => {
+    const response = await api.get(`/api/task_boards/${boardId}/stats`);
+    return response.data;
+};
+
 // Attach functions to the `api` instance
 api.getUser = getUser;
 api.getTaskBoards = getTaskBoards;
@@ -122,5 +127,6 @@ api.archiveBoard = archiveBoard;
 api.getActiveBoards = getActiveBoards;
 api.getArchivedBoards = getArchivedBoards;
 api.deleteBoard = deleteBoard;
+api.getBoardStats = getBoardStats;
 
 export default api;

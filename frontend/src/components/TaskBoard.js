@@ -3,14 +3,27 @@ import Task from './Task';
 import api from '../services/api';
 import '../styles/TaskBoard.css'
 import EditBoardModal from "./EditBoardModal";
+import BoardStatsModal from "./BoardStatsModal";
 
 const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTask, onUpdateTask, onUpdateBoard, onDeleteBoard }) => {
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [showStatsModal, setShowStatsModal] = useState(false);
+    const [stats, setStats] = useState(null);
 
     const handleEditBoard = () => {
         setShowEditModal(true);
     }
+
+    const handleViewStats = async () => {
+        try {
+            const res = await api.getBoardStats(board.id);
+            setStats(res);
+            setShowStatsModal(true);
+        } catch (err) {
+            console.error("Failed to fetch stats:", err);
+        }
+    };
 
     const handleSaveBoard = async (boardId, updatedData) => {
         try {
@@ -42,9 +55,17 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
             <h2>{board.name}</h2>
             <p>{board.description}</p>
 
+            {user.role === 'ADMIN' && (
+                <button onClick={handleViewStats}>View Stats</button>
+            )}
+
             {/* Admins see "Edit Board" button */}
             {user.role === 'ADMIN' && (
                 <button onClick={() => handleEditBoard(board.id)}>Edit Board</button>
+            )}
+
+            {showStatsModal && (
+                <BoardStatsModal boardId={board.id} onClose={() => setShowStatsModal(false)} />
             )}
 
             {showEditModal && (

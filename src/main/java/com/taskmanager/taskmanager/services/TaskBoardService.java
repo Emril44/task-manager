@@ -1,6 +1,8 @@
 package com.taskmanager.taskmanager.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taskmanager.taskmanager.dtos.TaskBoardDto;
+import com.taskmanager.taskmanager.dtos.TaskBoardStatsDto;
 import com.taskmanager.taskmanager.entities.Task;
 import com.taskmanager.taskmanager.entities.TaskBoard;
 import com.taskmanager.taskmanager.entities.User;
@@ -79,6 +81,57 @@ public class TaskBoardService {
         );
         dto.setArchived(board.isArchived());
         return dto;
+    }
+
+    @Transactional
+    public TaskBoardStatsDto getStatsForBoard(Long boardId) {
+        TaskBoard board = taskBoardRepository.findByIdWithTasks(boardId)
+                .orElseThrow(() -> new TaskBoardNotFoundException("Board not found"));
+
+        List<Task> tasks = board.getTasks();
+        TaskBoardStatsDto stats = new TaskBoardStatsDto();
+
+        int totalTasks = tasks.size();
+        int notStarted = 0, inProgress = 0, completed = 0;
+        int lowPriority = 0, mediumPriority = 0, highPriority = 0;
+
+        for (Task task : tasks) {
+            switch (task.getStatus().toLowerCase()) {
+                case "not started" -> notStarted++;
+                case "in progress" -> inProgress++;
+                case "completed" -> completed++;
+            }
+
+            switch (task.getPriority()) {
+                case 1 -> lowPriority++;
+                case 2 -> mediumPriority++;
+                case 3 -> highPriority++;
+            }
+        }
+
+        stats.setTotalTasks(totalTasks);
+        stats.setNotStarted(notStarted);
+        stats.setInProgress(inProgress);
+        stats.setCompleted(completed);
+        stats.setLowPriority(lowPriority);
+        stats.setMediumPriority(mediumPriority);
+        stats.setHighPriority(highPriority);
+
+        System.out.println("=== Board Stats Computed ===");
+        System.out.println("Total Tasks: " + totalTasks);
+        System.out.println("Not Started: " + notStarted);
+        System.out.println("In Progress: " + inProgress);
+        System.out.println("Completed: " + completed);
+        System.out.println("Low Priority: " + lowPriority);
+        System.out.println("Medium Priority: " + mediumPriority);
+        System.out.println("High Priority: " + highPriority);
+        try {
+            System.out.println(new ObjectMapper().writeValueAsString(stats));
+        } catch (Exception e) {
+            System.out.println("thing broke :c");
+        }
+
+        return stats;
     }
 }
 

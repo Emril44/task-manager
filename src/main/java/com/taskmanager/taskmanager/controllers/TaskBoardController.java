@@ -1,6 +1,7 @@
 package com.taskmanager.taskmanager.controllers;
 
 import com.taskmanager.taskmanager.dtos.TaskBoardDto;
+import com.taskmanager.taskmanager.dtos.TaskBoardStatsDto;
 import com.taskmanager.taskmanager.entities.Task;
 import com.taskmanager.taskmanager.entities.TaskBoard;
 import com.taskmanager.taskmanager.entities.User;
@@ -148,5 +149,10 @@ public class TaskBoardController {
         }
         taskBoardService.deleteTaskBoard(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/stats")
+    public ResponseEntity<TaskBoardStatsDto> getBoardStats(@PathVariable Long id) {
+        return ResponseEntity.ok(taskBoardService.getStatsForBoard(id));
     }
 }
