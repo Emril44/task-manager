@@ -20,12 +20,15 @@ const Task = ({ task, user, onDelete, onUpdate, allUsers }) => {
     };
 
     const handleSave = async () => {
+        console.log(`task.assignedUserId: ${task.assignedUserId}`);
+        console.log(`editedTask.assignedUserId: ${editedTask.assignedUserId}`);
         try {
             if (
                 user.role === 'ADMIN' &&
                 editedTask.assignedUserId &&
                 editedTask.assignedUserId !== task.assignedUserId
             ) {
+                console.log(`assigning user ${editedTask.assignedUserId}`);
                 await api.assignUserToTask(task.id, editedTask.assignedUserId);
             }
 
@@ -106,24 +109,32 @@ const Task = ({ task, user, onDelete, onUpdate, allUsers }) => {
                 )}</span>
                 {user.role === 'ADMIN' && (
                     <div className="task-assign-user">
-                        <label htmlFor="assign-user">Assigned to user:</label>
-                        <select
-                            id="assign-user"
-                            value={editedTask.assignedUserId || ''}
-                            onChange={(e) =>
-                                setEditedTask({
-                                    ...editedTask,
-                                    assignedUserId: parseInt(e.target.value),
-                                })
-                            }
-                        >
-                            <option value="">-- Select User --</option>
-                            {allUsers.map((user) => (
-                                <option key={user.id} value={user.id}>
-                                    {user.email}
-                                </option>
-                            ))}
-                        </select>
+                        <label>Assigned to user </label>
+                        {isEditing ? (
+                            <select
+                                id="assign-user"
+                                value={editedTask.assignedUserId || ''}
+                                onChange={(e) =>
+                                    setEditedTask({
+                                        ...editedTask,
+                                        assignedUserId: parseInt(e.target.value),
+                                    })
+                                }
+                            >
+                                <option value="">-- Select User --</option>
+                                {allUsers.map((user) => (
+                                    <option key={user.id} value={user.id}>
+                                        {user.email}
+                                    </option>
+                                ))}
+                            </select>
+                        ) : (
+                            <span>
+                {
+                    allUsers.find((u) => u.id === task.assignedUserId)?.email || 'Unassigned'
+                }
+            </span>
+                        )}
                     </div>
                 )}
             </div>
