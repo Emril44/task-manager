@@ -34,6 +34,51 @@
 
 .taskboard-container {
     display: flex;
-    flex-direction: column;
-    gap: var(--padding-medium);
+    flex-direction: row;         /* horizontal layout */
+    gap: 16px;                   /* space between boards */
+    overflow-x: auto;            /* scroll if overflow */
+    padding: 16px;
+    margin-top: 16px;
+    scroll-snap-type: x mandatory;
+}
+
+.admin-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #e0f7fa; /* soft cyan */
+    padding: 12px 20px;
+    border-bottom: 1px solid #cbd5e0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.admin-toolbar .left-actions,
+.admin-toolbar .right-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.create-board-button,
+.view-global-stats-button {
+    padding: 8px 14px;
+    background-color: #4a5568;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-board-button:hover,
+.view-global-stats-button:hover {
+    background-color: #2d3748;
+}
+
+.board-filtering select {
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    border: 1px solid #ccc;
 }

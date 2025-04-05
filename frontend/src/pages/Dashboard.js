@@ -186,39 +186,26 @@ const Dashboard = () => {
             <div>
                 <Navbar user={user} />
                 {user && user.role === 'ADMIN' && (
-                    <button onClick={() => setShowCreateBoard(true)}>+ New Board</button>
-                )}
-                {showCreateBoard && (
-                    <CreateBoardModal
-                        onClose={() => setShowCreateBoard(false)}
-                        onSave={handleCreateBoard}
-                    />
-                )}
-                {/* Conditionally render footer if user is admin */}
-                {user && user.role === 'ADMIN' && (
-                    <div className="taskboard-management-bar">
-                        <div className="board-filtering">
-                            <select value={filter} onChange={handleFilterChange}>
-                                <option value="ALL">All Boards</option>
-                                <option value="ACTIVE">Active Boards</option>
-                                <option value="ARCHIVED">Archived Boards</option>
-                            </select>
+                    <div className="admin-toolbar">
+                        <div className="left-actions">
+                            <button className="create-board-button" onClick={() => setShowCreateBoard(true)}>+ New Board</button>
+                            <div className="board-filtering">
+                                <select value={filter} onChange={handleFilterChange}>
+                                    <option value="ALL">All Boards</option>
+                                    <option value="ACTIVE">Active Boards</option>
+                                    <option value="ARCHIVED">Archived Boards</option>
+                                </select>
+                            </div>
                         </div>
-                        <div className="user-management">
-                            <button>User Management</button>
-                        </div>
-                        <div className="global-task-management">
-                            <button onClick={handleShowGlobalStats}>View Global Board Stats</button>
-                            {showGlobalStats && (
-                                <BoardStatsModal
-                                    boardId={null}  // not needed
-                                    onClose={() => setShowGlobalStats(false)}
-                                    statsOverride={globalStats}  // custom prop
-                                />
-                            )}
+
+                        <div className="right-actions">
+                            <button className="view-global-stats-button" onClick={handleShowGlobalStats}>
+                                View Global Board Stats
+                            </button>
                         </div>
                     </div>
                 )}
+                <div className="taskboard-container">
                 {taskBoards.map((board) => (
                     <TaskBoard
                         key={board.id}
@@ -234,6 +221,7 @@ const Dashboard = () => {
                         allUsers={allUsers}
                     />
                 ))}
+                </div>
             </div>
         );
 };

@@ -3,8 +3,10 @@
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: var(--padding-medium);
-    margin: var(--padding-large) auto; /* This centers it horizontally */
-    max-width: 1200px; /* Set your desired max-width */
+    min-width: 300px;
+    max-width: 500px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
 
@@ -35,4 +37,30 @@
 
 .create-button:hover {
     background-color: #38a169;
+}
+
+.taskboard-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.view-board-stats-button,
+.edit-board-button {
+    background-color: #4a5568; /* dark slate */
+    color: #fff;
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.view-board-stats-button:hover {
+    background-color: #2d3748; /* darker slate */
+}
+
+.edit-board-button:hover {
+    background-color: #2b6cb0; /* soft blue for contrast */
 }

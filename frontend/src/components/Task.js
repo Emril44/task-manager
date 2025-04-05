@@ -46,114 +46,92 @@ const Task = ({ task, user, onDelete, onUpdate, allUsers }) => {
     return (
         <div className="task">
             <div className="task-header">
-                <span className="task-title">{isEditing ? (
-                    <input
-                        type="text"
-                        name="title"
-                        value={editedTask.title || ''}
-                        onChange={handleEditChange}
-                    />
+                {isEditing ? (
+                    <input name="title" value={editedTask.title || ''} onChange={handleEditChange}/>
                 ) : (
                     task.title
-                )}</span>
+                )}
             </div>
+
             <div className="task-content">
-                <p>{isEditing ? (
-                    <textarea
-                        name="description"
-                        value={editedTask.description || ''}
-                        onChange={handleEditChange}
-                    />
+                {isEditing ? (
+                    <textarea name="description" value={editedTask.description || ''} onChange={handleEditChange}/>
                 ) : (
                     task.description
-                )}</p>
-            </div>
-            <div className="task-priority">
-                <span>Priority: {isEditing ? (
-                    <select
-                        name="priority"
-                        value={editedTask.priority || 1}
-                        onChange={handleEditChange}
-                    >
-                        <option value={1}>Low</option>
-                        <option value={2}>Medium</option>
-                        <option value={3}>High</option>
-                    </select>
-                ) : (
-                    convertPriority(task.priority)
-                )}</span>
-            </div>
-            <div className="task-due-date">
-                <p>Due Date: {isEditing ? (
-                    <input
-                        type="date"
-                        name="dueDate"
-                        value={editedTask.dueDate || ''}
-                        onChange={handleEditChange}
-                    />
-                ) : (
-                    task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'N/A'
-                )}</p>
-                <span className="task-status">Status: {isEditing ? (
-                    <select
-                        name="status"
-                        value={editedTask.status || 'not-started'}
-                        onChange={handleEditChange}
-                    >
-                        <option value="not started">Not Started</option>
-                        <option value="in progress">In Progress</option>
-                        <option value="completed">Completed</option>
-                    </select>
-                ) : (
-                    task.status
-                )}</span>
-                {user.role === 'ADMIN' && (
-                    <div className="task-assign-user">
-                        <label>Assigned to user </label>
-                        {isEditing ? (
-                            <select
-                                id="assign-user"
-                                value={editedTask.assignedUserId || ''}
-                                onChange={(e) =>
-                                    setEditedTask({
-                                        ...editedTask,
-                                        assignedUserId: parseInt(e.target.value),
-                                    })
-                                }
-                            >
-                                <option value="">-- Select User --</option>
-                                {allUsers.map((user) => (
-                                    <option key={user.id} value={user.id}>
-                                        {user.email}
-                                    </option>
-                                ))}
-                            </select>
-                        ) : (
-                            <span>
-                {
-                    allUsers.find((u) => u.id === task.assignedUserId)?.email || 'Unassigned'
-                }
-            </span>
-                        )}
-                    </div>
                 )}
             </div>
+
+            <div className="task-meta">
+    <span>
+      <strong>Priority:</strong>{' '}
+        {isEditing ? (
+            <select name="priority" value={editedTask.priority || 1} onChange={handleEditChange}>
+                <option value={1}>Low</option>
+                <option value={2}>Medium</option>
+                <option value={3}>High</option>
+            </select>
+        ) : (
+            convertPriority(task.priority)
+        )}
+    </span>
+
+                <span>
+      <strong>Status:</strong>{' '}
+                    {isEditing ? (
+                        <select name="status" value={editedTask.status || ''} onChange={handleEditChange}>
+                            <option value="not started">Not Started</option>
+                            <option value="in progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    ) : (
+                        <span className="task-status">{task.status}</span>
+                    )}
+    </span>
+
+                <span>
+      <strong>Due Date:</strong>{' '}
+                    {isEditing ? (
+                        <input type="date" name="dueDate" value={editedTask.dueDate || ''} onChange={handleEditChange}/>
+                    ) : (
+                        task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'N/A'
+                    )}
+    </span>
+            </div>
+
+            {user.role === 'ADMIN' && (
+                <div className="task-assign-user">
+                    <label><strong>Assigned to:</strong></label>{' '}
+                    {isEditing ? (
+                        <select
+                            value={editedTask.assignedUserId || ''}
+                            onChange={(e) => setEditedTask({...editedTask, assignedUserId: parseInt(e.target.value)})}
+                        >
+                            <option value="">-- Select User --</option>
+                            {allUsers.map((u) => (
+                                <option key={u.id} value={u.id}>
+                                    {u.email}
+                                </option>
+                            ))}
+                        </select>
+                    ) : (
+                        allUsers.find((u) => u.id === task.assignedUserId)?.email || 'Unassigned'
+                    )}
+                </div>
+            )}
+
             <div className="task-actions">
-                {canEditTask && (
-                    <>
-                        {isEditing ? (
-                            <>
-                                <button className="save-button" onClick={handleSave}>Save</button>
-                                <button className="cancel-button" onClick={() => setIsEditing(false)}>Cancel</button>
-                            </>
-                        ) : (
-                            <>
-                                <button className="edit-button" onClick={() => setIsEditing(true)}>Edit Task</button>
-                                <button className="delete-button" onClick={() => onDelete(task.id)}>Delete Task</button>
-                            </>
-                        )}
-                    </>
-                )}
+                {canEditTask &&
+                    (isEditing ? (
+                        <>
+                            <button className="save-button" onClick={handleSave}>Save</button>
+                            <button className="cancel-button" onClick={() => setIsEditing(false)}>Cancel</button>
+                        </>
+                    ) : (
+                        <>
+                            <button className="edit-button" onClick={() => setIsEditing(true)}>Edit Task</button>
+                            <button className="delete-button" onClick={() => onDelete(task.id)}>Delete Task</button>
+                        </>
+                    ))}
             </div>
         </div>
     );

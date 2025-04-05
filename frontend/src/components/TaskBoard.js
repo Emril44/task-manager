@@ -56,12 +56,14 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
             <p>{board.description}</p>
 
             {user.role === 'ADMIN' && (
-                <button onClick={handleViewStats}>View Stats</button>
-            )}
-
-            {/* Admins see "Edit Board" button */}
-            {user.role === 'ADMIN' && (
-                <button onClick={() => handleEditBoard(board.id)}>Edit Board</button>
+                <div className="taskboard-buttons">
+                    <button className="view-board-stats-button" onClick={handleViewStats}>
+                        View Stats
+                    </button>
+                    <button className="edit-board-button" onClick={() => handleEditBoard(board.id)}>
+                        Edit Board
+                    </button>
+                </div>
             )}
 
             {showStatsModal && (
