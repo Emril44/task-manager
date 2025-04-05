@@ -49,10 +49,10 @@ const EditBoardModal = ({ board, onClose, onSave }) => {
                     onChange={handleChange}
                     placeholder="Board Description"
                     />
-                <button onClick={() => handleArchiveBoard(board.id)}>Archive</button>
+                <button className="archive-button" onClick={() => handleArchiveBoard(board.id)}>Archive</button>
                 <div className="modal-actions">
-                    <button onClick={handleSubmit}>Save</button>
-                    <button onClick={onClose}>Cancel</button>
+                    <button className="save-button" onClick={handleSubmit}>Save</button>
+                    <button className="cancel-button" onClick={onClose}>Cancel</button>
                 </div>
             </div>
         </div>

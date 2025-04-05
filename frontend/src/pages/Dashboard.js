@@ -205,6 +205,22 @@ const Dashboard = () => {
                         </div>
                     </div>
                 )}
+
+                {showGlobalStats && (
+                    <BoardStatsModal
+                        boardId={null}
+                        onClose={() => setShowGlobalStats(false)}
+                        statsOverride={globalStats}
+                    />
+                )}
+
+                {showCreateBoard && (
+                    <CreateBoardModal
+                        onClose={() => setShowCreateBoard(false)}
+                        onSave={handleCreateBoard}
+                    />
+                )}
+
                 <div className="taskboard-container">
                 {taskBoards.map((board) => (
                     <TaskBoard

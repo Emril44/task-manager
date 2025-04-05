@@ -58,6 +58,7 @@ const getTasksByBoardId = async (boardId) => {
 
 export const createTaskBoard = async (boardData) => {
     const token = localStorage.getItem('authToken');
+    console.log(boardData);
     const response = await api.post('/api/task_boards', boardData, {
         headers: {
             Authorization: `Bearer ${token}`,

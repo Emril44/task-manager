@@ -25,14 +25,6 @@ public class TaskBoard {
     @OneToMany(mappedBy = "taskBoard", cascade = CascadeType.ALL)
     private List<Task> tasks;
 
-    @ManyToMany
-    @JoinTable(
-            name = "task_board_users",
-            joinColumns = @JoinColumn(name = "task_board_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> users;
-
     @Column(nullable = false)
     private boolean archived = false;
 
@@ -83,14 +75,6 @@ public class TaskBoard {
         this.tasks = tasks;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -108,7 +92,7 @@ public class TaskBoard {
     }
 
     public void setArchived(boolean archived) {
-        this.archived = true;
+        this.archived = archived;
     }
 
     public boolean isArchived() {

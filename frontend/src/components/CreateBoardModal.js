@@ -48,8 +48,8 @@ const CreateBoardModal = ({ board, onClose, onSave }) => {
                     Archived
                 </label>
                 <div className="modal-actions">
-                    <button onClick={handleSubmit}>Save</button>
-                    <button onClick={onClose}>Cancel</button>
+                    <button className="save-button" onClick={handleSubmit}>Save</button>
+                    <button className="cancel-button" onClick={onClose}>Cancel</button>
                 </div>
             </div>
         </div>
