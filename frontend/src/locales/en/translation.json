@@ -1,0 +1,29 @@
+{
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "already_have_account": "Already have an account?",
+    "dont_have_account": "Don't have an account?",
+    "invalid_credentials": "Invalid email or password",
+    "passwords_do_not_match": "Passwords do not match",
+    "error_creating_account": "Error creating account",
+    "no_account_message": "Don't have an account?",
+    "yes_account_message": "Already have an account?"
+  },
+  "dashboard": {
+    "create_board": "+ New Board",
+    "all_boards": "All Boards",
+    "active_boards": "Active Boards",
+    "archived_boards": "Archived Boards",
+    "view_global_stats": "View Global Board Stats",
+    "loading": "Loading data..."
+  },
+  "navbar": {
+    "task_manager": "Task Manager",
+    "admin_dashboard": "Admin Dashboard",
+    "user_dashboard": "User Dashboard"
+  }
+}

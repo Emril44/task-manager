@@ -1,0 +1,29 @@
+{
+  "auth": {
+    "login": "Увійти",
+    "register": "Зареєструватися",
+    "email": "Електронна пошта",
+    "password": "Пароль",
+    "confirm_password": "Підтвердити пароль",
+    "already_have_account": "Вже маєте обліковий запис?",
+    "dont_have_account": "Немає облікового запису?",
+    "invalid_credentials": "Невірна електронна пошта або пароль",
+    "passwords_do_not_match": "Паролі не співпадають",
+    "error_creating_account": "Помилка при створенні облікового запису",
+    "no_account_message": "Не маєте акаунт?",
+    "yes_account_message": "Уже маєте акаунт?"
+  },
+  "dashboard": {
+    "create_board": "+ Створити дошку",
+    "all_boards": "Всі дошки",
+    "active_boards": "Активні дошки",
+    "archived_boards": "Архівовані дошки",
+    "view_global_stats": "Переглянути глобальну статистику дошок",
+    "loading": "Завантаження даних..."
+  },
+  "navbar": {
+    "task_manager": "Менеджер Завдань",
+    "admin_dashboard": "Панель Адміністратора",
+    "user_dashboard": "Панель Користувача"
+  }
+}

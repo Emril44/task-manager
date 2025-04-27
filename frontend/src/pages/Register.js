@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -11,12 +12,13 @@ const Register = () => {
         confirmPassword: ''
     });
     const [error, setError] = useState('');
-    const navigate = useNavigate();
+    const { t, i18n } = useTranslation();
 
+    const navigate = useNavigate();
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
 
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
@@ -34,11 +36,16 @@ const Register = () => {
         } catch (error) {
             setError('Error creating account');
         }
+
     };
 
     return (
         <div className="auth-container">
-            <h2>Register</h2>
+            <div style={{textAlign: 'right', margin: '10px'}}>
+                <button onClick={() => i18n.changeLanguage('en')}>ENG</button>
+                <button onClick={() => i18n.changeLanguage('uk')}>UKR</button>
+            </div>
+            <h2>{t('auth.register')}</h2>
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -73,9 +80,9 @@ const Register = () => {
                     required
                 />
                 {error && <p className="error">{error}</p>}
-                <button type="submit">Register</button>
+                <button type="submit">{t('auth.register')}</button>
                 <p>
-                    Already have an account? <a href="/login">Login</a>
+                    {t('auth.yes_account_message')} <a href="/login">{t('auth.login')}</a>
                 </p>
             </form>
         </div>
