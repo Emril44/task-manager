@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/EditBoardModal.css';
 import api from "../services/api";
+import { useTranslation } from 'react-i18next';
 
 const EditBoardModal = ({ board, onClose, onSave }) => {
     const [formData, setFormData] = React.useState({
@@ -8,6 +9,7 @@ const EditBoardModal = ({ board, onClose, onSave }) => {
         description: board.description,
         archived: board.archived || false
     });
+    const { t } = useTranslation();
 
     const handleChange = (e) => {
         const {name, value, type, checked} = e.target;
@@ -35,24 +37,24 @@ const EditBoardModal = ({ board, onClose, onSave }) => {
     return (
         <div className="modal-overlay">
             <div className="modal">
-                <h2>Edit Board</h2>
+                <h2>{t('edit_board.title')}</h2>
                 <input
                     name="name"
                     type="text"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Board Name"
+                    placeholder={t('edit_board.board_name')}
                     />
                 <textarea
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
-                    placeholder="Board Description"
+                    placeholder={t('edit_board.board_description')}
                     />
-                <button className="archive-button" onClick={() => handleArchiveBoard(board.id)}>Archive</button>
+                <button className="archive-button" onClick={() => handleArchiveBoard(board.id)}>{t('edit_board.archive')}</button>
                 <div className="modal-actions">
-                    <button className="save-button" onClick={handleSubmit}>Save</button>
-                    <button className="cancel-button" onClick={onClose}>Cancel</button>
+                    <button className="save-button" onClick={handleSubmit}>{t('edit_board.save')}</button>
+                    <button className="cancel-button" onClick={onClose}>{t('edit_board.cancel')}</button>
                 </div>
             </div>
         </div>

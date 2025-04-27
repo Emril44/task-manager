@@ -14,12 +14,67 @@
     "yes_account_message": "Уже маєте акаунт?"
   },
   "dashboard": {
-    "create_board": "+ Створити дошку",
-    "all_boards": "Всі дошки",
+    "loading": "Завантаження даних...",
+    "new_board": "Нова дошка",
+    "all_boards": "Усі дошки",
     "active_boards": "Активні дошки",
-    "archived_boards": "Архівовані дошки",
-    "view_global_stats": "Переглянути глобальну статистику дошок",
-    "loading": "Завантаження даних..."
+    "archived_boards": "Архів дошок",
+    "view_global_stats": "Глобальна статистика"
+  },
+  "taskboard": {
+    "view_stats": "Статистика",
+    "edit_board": "Редагування дошки",
+    "task_title": "Назва завдання",
+    "task_description": "Опис завдання",
+    "create_task": "Створити завдання",
+    "cancel": "Відміна",
+    "delete_board": "Видалити дошку"
+  },
+  "task": {
+    "priority": "Пріоритет",
+    "status": "Статус",
+    "due_date": "Дедлайн",
+    "assigned_to": "Назначено ",
+    "select_user": "-- Обрати користувача --",
+    "save": "Зберегти",
+    "cancel": "Відміна",
+    "edit": "Відредагувати завдання",
+    "delete": "Видалити завдання",
+    "priorities": {
+      "low": "Низький",
+      "medium": "Середній",
+      "high": "Високий"
+    },
+    "statuses": {
+      "not_started": "Не почато",
+      "in_progress": "У процесі",
+      "completed": "Зроблено"
+    }
+  },
+  "edit_board": {
+    "title": "Редагувати дошку",
+    "board_name": "Назва дошки",
+    "board_description": "Опис дошки",
+    "archive": "Архівувати",
+    "save": "Збегети",
+    "cancel": "Відміна"
+  },
+  "create_board": {
+    "title": "Створити дошку",
+    "board_name": "Назва дошки",
+    "board_description": "Опис дошки",
+    "archived": "У архіві",
+    "save": "Зберегти",
+    "cancel": "Відміна"
+  },
+  "board_stats": {
+    "title": "Статистика дошки",
+    "loading": "Завантаження даних...",
+    "error": "Не вдалось завантажити дані.",
+    "total_tasks": "Загальна кількість завдань",
+    "task_status": "Стан завдань",
+    "task_priority": "Пріоритети завдань",
+    "close": "Закрити"
   },
   "navbar": {
     "task_manager": "Менеджер Завдань",

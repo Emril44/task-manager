@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Navbar from '../components/Navbar';
 import TaskBoard from '../components/TaskBoard';
 import api from '../services/api';
+import { useTranslation } from 'react-i18next';
 import '../styles/Dashboard.css'
 import CreateBoardModal from "../components/CreateBoardModal";
 import BoardStatsModal from "../components/BoardStatsModal";
@@ -22,6 +23,8 @@ const Dashboard = () => {
     const [showGlobalStats, setShowGlobalStats] = useState(false);
     const [globalStats, setGlobalStats] = useState(null);
     const [allUsers, setAllUsers] = useState([]);
+    const { t } = useTranslation();
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -180,7 +183,7 @@ const Dashboard = () => {
     };
 
     if (!user) {
-        return <p>Loading data...</p>;
+        return <p>{t('dashboard.loading')}</p>;
     } else
         return (
             <div>
@@ -188,19 +191,19 @@ const Dashboard = () => {
                 {user && user.role === 'ADMIN' && (
                     <div className="admin-toolbar">
                         <div className="left-actions">
-                            <button className="create-board-button" onClick={() => setShowCreateBoard(true)}>+ New Board</button>
+                            <button className="create-board-button" onClick={() => setShowCreateBoard(true)}>+ {t('dashboard.new_board')}</button>
                             <div className="board-filtering">
                                 <select value={filter} onChange={handleFilterChange}>
-                                    <option value="ALL">All Boards</option>
-                                    <option value="ACTIVE">Active Boards</option>
-                                    <option value="ARCHIVED">Archived Boards</option>
+                                    <option value="ALL">{t('dashboard.all_boards')}</option>
+                                    <option value="ACTIVE">{t('dashboard.active_boards')}</option>
+                                    <option value="ARCHIVED">{t('dashboard.archived_boards')}</option>
                                 </select>
                             </div>
                         </div>
 
                         <div className="right-actions">
                             <button className="view-global-stats-button" onClick={handleShowGlobalStats}>
-                                View Global Board Stats
+                                {t('dashboard.view_global_stats')}
                             </button>
                         </div>
                     </div>

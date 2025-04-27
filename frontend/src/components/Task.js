@@ -2,10 +2,12 @@
 import React, {useState} from 'react';
 import '../styles/Task.css'
 import api from "../services/api";
+import { useTranslation } from 'react-i18next';
 
 const Task = ({ task, user, onDelete, onUpdate, allUsers }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedTask, setEditedTask] = useState({ ...task });
+    const { t } = useTranslation();
 
     if (!task || !user) return null;
 
@@ -63,12 +65,12 @@ const Task = ({ task, user, onDelete, onUpdate, allUsers }) => {
 
             <div className="task-meta">
     <span>
-      <strong>Priority:</strong>{' '}
+      <strong>{t('task.priority')}:</strong>{' '}
         {isEditing ? (
             <select name="priority" value={editedTask.priority || 1} onChange={handleEditChange}>
-                <option value={1}>Low</option>
-                <option value={2}>Medium</option>
-                <option value={3}>High</option>
+                <option value={1}>{t('task.priorities.low')}</option>
+                <option value={2}>{t('task.priorities.medium')}</option>
+                <option value={3}>{t('task.priorities.high')}</option>
             </select>
         ) : (
             convertPriority(task.priority)
@@ -76,12 +78,12 @@ const Task = ({ task, user, onDelete, onUpdate, allUsers }) => {
     </span>
 
                 <span>
-      <strong>Status:</strong>{' '}
+      <strong>{t('task.status')}:</strong>{' '}
                     {isEditing ? (
                         <select name="status" value={editedTask.status || ''} onChange={handleEditChange}>
-                            <option value="not started">Not Started</option>
-                            <option value="in progress">In Progress</option>
-                            <option value="completed">Completed</option>
+                            <option value="not started">{t('task.statuses.not_started')}</option>
+                            <option value="in progress">{t('task.statuses.in_progress')}</option>
+                            <option value="completed">{t('task.statuses.completed')}</option>
                         </select>
                     ) : (
                         <span className="task-status">{task.status}</span>
@@ -89,7 +91,7 @@ const Task = ({ task, user, onDelete, onUpdate, allUsers }) => {
     </span>
 
                 <span>
-      <strong>Due Date:</strong>{' '}
+      <strong>{t('task.due_date')}:</strong>{' '}
                     {isEditing ? (
                         <input type="date" name="dueDate" value={editedTask.dueDate || ''} onChange={handleEditChange}/>
                     ) : (
@@ -100,13 +102,13 @@ const Task = ({ task, user, onDelete, onUpdate, allUsers }) => {
 
             {user.role === 'ADMIN' && (
                 <div className="task-assign-user">
-                    <label><strong>Assigned to:</strong></label>{' '}
+                    <label><strong>{t('task.assigned_to')}:</strong></label>{' '}
                     {isEditing ? (
                         <select
                             value={editedTask.assignedUserId || ''}
                             onChange={(e) => setEditedTask({...editedTask, assignedUserId: parseInt(e.target.value)})}
                         >
-                            <option value="">-- Select User --</option>
+                            <option value="">-- {t('task.select_user')} --</option>
                             {allUsers.map((u) => (
                                 <option key={u.id} value={u.id}>
                                     {u.email}
@@ -123,13 +125,13 @@ const Task = ({ task, user, onDelete, onUpdate, allUsers }) => {
                 {canEditTask &&
                     (isEditing ? (
                         <>
-                            <button className="save-button" onClick={handleSave}>Save</button>
-                            <button className="cancel-button" onClick={() => setIsEditing(false)}>Cancel</button>
+                            <button className="save-button" onClick={handleSave}>{t('task.save')}</button>
+                            <button className="cancel-button" onClick={() => setIsEditing(false)}>{t('task.cancel')}</button>
                         </>
                     ) : (
                         <>
-                            <button className="edit-button" onClick={() => setIsEditing(true)}>Edit Task</button>
-                            <button className="delete-button" onClick={() => onDelete(task.id)}>Delete Task</button>
+                            <button className="edit-button" onClick={() => setIsEditing(true)}>{t('task.edit')}</button>
+                            <button className="delete-button" onClick={() => onDelete(task.id)}>{t('task.delete')}</button>
                         </>
                     ))}
             </div>

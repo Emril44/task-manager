@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/CreateBoardModal.css';
+import { useTranslation } from 'react-i18next';
 
 const CreateBoardModal = ({ board, onClose, onSave }) => {
     const [formData, setFormData] = React.useState({
@@ -7,6 +8,8 @@ const CreateBoardModal = ({ board, onClose, onSave }) => {
         description: '',
         archived: false
     });
+
+    const { t } = useTranslation();
 
     const handleChange = (e) => {
         const {name, value, type, checked} = e.target;
@@ -24,19 +27,19 @@ const CreateBoardModal = ({ board, onClose, onSave }) => {
     return (
         <div className="modal-overlay">
             <div className="modal">
-                <h2>Create Board</h2>
+                <h2>{t('create_board.title')}</h2>
                 <input
                     name="name"
                     type="text"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Board Name"
+                    placeholder={t('create_board.board_name')}
                 />
                 <textarea
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
-                    placeholder="Board Description"
+                    placeholder={t('create_board.board_description')}
                 />
                 <label>
                     <input
@@ -45,11 +48,11 @@ const CreateBoardModal = ({ board, onClose, onSave }) => {
                         checked={formData.archived}
                         onChange={handleChange}
                     />
-                    Archived
+                    {t('create_board.archived')}
                 </label>
                 <div className="modal-actions">
-                    <button className="save-button" onClick={handleSubmit}>Save</button>
-                    <button className="cancel-button" onClick={onClose}>Cancel</button>
+                    <button className="save-button" onClick={handleSubmit}>{t('create_board.save')}</button>
+                    <button className="cancel-button" onClick={onClose}>{t('create_board.cancel')}</button>
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
 } from 'recharts';
 import '../styles/BoardStatsModal.css';
+import { useTranslation } from 'react-i18next';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
 
@@ -12,6 +13,8 @@ const BoardStatsModal = ({ boardId, onClose, statsOverride }) => {
     const [stats, setStats] = useState(statsOverride || null);
     const [loading, setLoading] = useState(!statsOverride);
     const [error, setError] = useState(null);
+    const { t } = useTranslation();
+
 
     useEffect(() => {
         if (statsOverride || !boardId) return;
@@ -29,32 +32,32 @@ const BoardStatsModal = ({ boardId, onClose, statsOverride }) => {
     }, [boardId, statsOverride]);
 
     const statusData = stats ? [
-        { name: 'Not Started', value: stats.notStarted },
-        { name: 'In Progress', value: stats.inProgress },
-        { name: 'Completed', value: stats.completed },
+        { name: t('task.statuses.not_started'), value: stats.notStarted },
+        { name: t('task.statuses.in_progress'), value: stats.inProgress },
+        { name: t('task.statuses.completed'), value: stats.completed },
     ] : [];
 
     const priorityData = stats ? [
-        { name: 'Low', count: stats.lowPriority },
-        { name: 'Medium', count: stats.mediumPriority },
-        { name: 'High', count: stats.highPriority },
+        { name: t('task.priorities.low'), count: stats.lowPriority },
+        { name: t('task.priorities.medium'), count: stats.mediumPriority },
+        { name: t('task.priorities.high'), count: stats.highPriority },
     ] : [];
 
     return (
         <div className="modal-overlay">
             <div className="modal">
-                <h2>Board Stats</h2>
+                <h2>{t('board_stats.title')}</h2>
 
-                {loading && <p>Loading stats...</p>}
+                {loading && <p>{t('board_stats.loading')}</p>}
                 {error && <p>{error}</p>}
 
                 {stats && (
                     <>
                         <ul>
-                            <li><strong>Total Tasks:</strong> {stats.totalTasks}</li>
+                            <li><strong>{t('board_stats.total_tasks')}:</strong> {stats.totalTasks}</li>
                         </ul>
 
-                        <h4>Task Status</h4>
+                        <h4>{t('board_stats.task_status')}</h4>
                         <PieChart width={300} height={200}>
                             <Pie data={statusData} dataKey="value" cx="50%" cy="50%" outerRadius={70} label>
                                 {statusData.map((_, index) => (
@@ -64,7 +67,7 @@ const BoardStatsModal = ({ boardId, onClose, statsOverride }) => {
                             <RechartsTooltip />
                         </PieChart>
 
-                        <h4>Task Priority</h4>
+                        <h4>{t('board_stats.task_priority')}</h4>
                         <BarChart width={350} height={250} data={priorityData}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="name" />
@@ -77,7 +80,7 @@ const BoardStatsModal = ({ boardId, onClose, statsOverride }) => {
                 )}
 
                 <div className="modal-actions">
-                    <button onClick={onClose}>Close</button>
+                    <button onClick={onClose}>{t('board_stats.close')}</button>
                 </div>
             </div>
         </div>

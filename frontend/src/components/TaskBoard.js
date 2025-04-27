@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Task from './Task';
 import api from '../services/api';
 import '../styles/TaskBoard.css'
+import { useTranslation } from 'react-i18next';
 import EditBoardModal from "./EditBoardModal";
 import BoardStatsModal from "./BoardStatsModal";
 
@@ -10,6 +11,7 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
     const [showEditModal, setShowEditModal] = useState(false);
     const [showStatsModal, setShowStatsModal] = useState(false);
     const [stats, setStats] = useState(null);
+    const { t } = useTranslation();
 
     const handleEditBoard = () => {
         setShowEditModal(true);
@@ -58,10 +60,10 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
             {user.role === 'ADMIN' && (
                 <div className="taskboard-buttons">
                     <button className="view-board-stats-button" onClick={handleViewStats}>
-                        View Stats
+                        {t('taskboard.view_stats')}
                     </button>
                     <button className="edit-board-button" onClick={() => handleEditBoard(board.id)}>
-                        Edit Board
+                        {t('taskboard.edit_board')}
                     </button>
                 </div>
             )}
@@ -96,12 +98,12 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
                 <div className="create-task-form">
                     <input
                         type="text"
-                        placeholder="Task Title"
+                        placeholder={t('taskboard.task_title')}
                         value={newTask.title}
                         onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
                     />
                     <textarea
-                        placeholder="Task Description"
+                        placeholder={t('taskboard.task_description')}
                         value={newTask.description}
                         onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
                     ></textarea>
@@ -110,15 +112,15 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
                         value={newTask.dueDate}
                         onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
                     />
-                    <button onClick={onCreateTask}>Create Task</button>
-                    <button className="cancel-button" onClick={() => setShowCreateForm(false)}>Cancel</button>
+                    <button onClick={onCreateTask}>{t('taskboard.create_task')}</button>
+                    <button className="cancel-button" onClick={() => setShowCreateForm(false)}>{t('taskboard.cancel')}</button>
                 </div>
             ) : (
-                <button className="create-button" onClick={() => setShowCreateForm(true)}>Create Task</button>
+                <button className="create-button" onClick={() => setShowCreateForm(true)}>{t('taskboard.create_task')}</button>
             )}
             {user.role === 'ADMIN' && Boolean(board.archived) && (
                 <button className="delete-button" onClick={() => handleDeleteBoard(board.id)}>
-                    Delete Board
+                    {t('taskboard.delete_board')}
                 </button>
             )}
         </div>

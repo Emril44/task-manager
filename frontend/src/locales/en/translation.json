@@ -14,12 +14,67 @@
     "yes_account_message": "Already have an account?"
   },
   "dashboard": {
-    "create_board": "+ New Board",
+    "loading": "Loading data...",
+    "new_board": "New Board",
     "all_boards": "All Boards",
     "active_boards": "Active Boards",
     "archived_boards": "Archived Boards",
-    "view_global_stats": "View Global Board Stats",
-    "loading": "Loading data..."
+    "view_global_stats": "View Global Board Stats"
+  },
+  "taskboard": {
+    "view_stats": "View Stats",
+    "edit_board": "Edit Board",
+    "task_title": "Task Title",
+    "task_description": "Task Description",
+    "create_task": "Create Task",
+    "cancel": "Cancel",
+    "delete_board": "Delete Board"
+  },
+  "task": {
+    "priority": "Priority",
+    "status": "Status",
+    "due_date": "Due Date",
+    "assigned_to": "Assigned to",
+    "select_user": "-- Select User --",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit Task",
+    "delete": "Delete Task",
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "statuses": {
+      "not_started": "Not Started",
+      "in_progress": "In Progress",
+      "completed": "Completed"
+    }
+  },
+  "edit_board": {
+    "title": "Edit Board",
+    "board_name": "Board Name",
+    "board_description": "Board Description",
+    "archive": "Archive",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "create_board": {
+    "title": "Create Board",
+    "board_name": "Board Name",
+    "board_description": "Board Description",
+    "archived": "Archived",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "board_stats": {
+    "title": "Board Stats",
+    "loading": "Loading stats...",
+    "error": "Failed to load stats.",
+    "total_tasks": "Total Tasks",
+    "task_status": "Task Status",
+    "task_priority": "Task Priority",
+    "close": "Close"
   },
   "navbar": {
     "task_manager": "Task Manager",
