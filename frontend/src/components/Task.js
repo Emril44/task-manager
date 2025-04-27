@@ -88,9 +88,14 @@ const Task = ({ task, user, onDelete, onUpdate, allUsers }) => {
                             <option value="completed">{t('task.statuses.completed')}</option>
                         </select>
                     ) : (
-                        <span className="task-status">{task.status}</span>
+                        <span className="task-status">
+                            {task.status === 'not started' && t('task.statuses.not_started')}
+                            {task.status === 'in progress' && t('task.statuses.in_progress')}
+                            {task.status === 'completed' && t('task.statuses.completed')}
+                            {task.status === 'overdue' && t('task.statuses.overdue')}
+                        </span>
                     )}
-    </span>
+                </span>
 
                 <span>
       <strong>{t('task.due_date')}:</strong>{' '}
