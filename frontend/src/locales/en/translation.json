@@ -49,7 +49,8 @@
     "statuses": {
       "not_started": "Not Started",
       "in_progress": "In Progress",
-      "completed": "Completed"
+      "completed": "Completed",
+      "overdue": "Overdue"
     }
   },
   "edit_board": {

@@ -42,7 +42,9 @@ const Task = ({ task, user, onDelete, onUpdate, allUsers }) => {
     };
 
     const convertPriority = (priority) => {
-        return priority === 1 ? 'Low' : priority === 2 ? 'Medium' : 'High';
+        if (priority === 1) return t('task.priorities.low');
+        if (priority === 2) return t('task.priorities.medium');
+        return t('task.priorities.high');
     };
 
     return (

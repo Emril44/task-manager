@@ -49,7 +49,8 @@
     "statuses": {
       "not_started": "Не почато",
       "in_progress": "У процесі",
-      "completed": "Зроблено"
+      "completed": "Зроблено",
+      "overdue": "Прострочено"
     }
   },
   "edit_board": {

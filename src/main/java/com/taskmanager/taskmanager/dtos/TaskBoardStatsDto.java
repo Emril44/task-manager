@@ -7,6 +7,7 @@ public class TaskBoardStatsDto {
     private int notStarted;
     private int inProgress;
     private int completed;
+    private int overdue;
     private int lowPriority;
     private int mediumPriority;
     private int highPriority;
@@ -65,5 +66,12 @@ public class TaskBoardStatsDto {
 
     public void setHighPriority(int highPriority) {
         this.highPriority = highPriority;
+    }
+
+    public int getOverdue() {
+        return overdue;
+    }
+    public void setOverdue(int overdue) {
+        this.overdue = overdue;
     }
 }

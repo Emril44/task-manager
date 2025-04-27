@@ -92,7 +92,7 @@ public class TaskBoardService {
         TaskBoardStatsDto stats = new TaskBoardStatsDto();
 
         int totalTasks = tasks.size();
-        int notStarted = 0, inProgress = 0, completed = 0;
+        int notStarted = 0, inProgress = 0, completed = 0, overdue=0;
         int lowPriority = 0, mediumPriority = 0, highPriority = 0;
 
         for (Task task : tasks) {
@@ -100,6 +100,7 @@ public class TaskBoardService {
                 case "not started" -> notStarted++;
                 case "in progress" -> inProgress++;
                 case "completed" -> completed++;
+                case "overdue" -> overdue++;
             }
 
             switch (task.getPriority()) {
@@ -113,6 +114,7 @@ public class TaskBoardService {
         stats.setNotStarted(notStarted);
         stats.setInProgress(inProgress);
         stats.setCompleted(completed);
+        stats.setOverdue(overdue);
         stats.setLowPriority(lowPriority);
         stats.setMediumPriority(mediumPriority);
         stats.setHighPriority(highPriority);
@@ -122,6 +124,7 @@ public class TaskBoardService {
         System.out.println("Not Started: " + notStarted);
         System.out.println("In Progress: " + inProgress);
         System.out.println("Completed: " + completed);
+        System.out.println("Overdue: " + overdue);
         System.out.println("Low Priority: " + lowPriority);
         System.out.println("Medium Priority: " + mediumPriority);
         System.out.println("High Priority: " + highPriority);
@@ -139,7 +142,7 @@ public class TaskBoardService {
         List<TaskBoard> allBoards = taskBoardRepository.findAll();
 
         TaskBoardStatsDto stats = new TaskBoardStatsDto();
-        int total = 0, notStarted = 0, inProgress = 0, completed = 0;
+        int total = 0, notStarted = 0, inProgress = 0, completed = 0, overdue=0;
         int low = 0, medium = 0, high = 0;
 
         for (TaskBoard board : allBoards) {
@@ -149,6 +152,7 @@ public class TaskBoardService {
                     case "not started" -> notStarted++;
                     case "in progress" -> inProgress++;
                     case "completed" -> completed++;
+                    case "overdue" -> overdue++;
                 }
                 switch (task.getPriority()) {
                     case 1 -> low++;
@@ -162,6 +166,7 @@ public class TaskBoardService {
         stats.setNotStarted(notStarted);
         stats.setInProgress(inProgress);
         stats.setCompleted(completed);
+        stats.setOverdue(overdue);
         stats.setLowPriority(low);
         stats.setMediumPriority(medium);
         stats.setHighPriority(high);

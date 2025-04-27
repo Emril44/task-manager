@@ -7,7 +7,7 @@ import {
 import '../styles/BoardStatsModal.css';
 import { useTranslation } from 'react-i18next';
 
-const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
+const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#d1363e'];
 
 const BoardStatsModal = ({ boardId, onClose, statsOverride }) => {
     const [stats, setStats] = useState(statsOverride || null);
@@ -35,6 +35,7 @@ const BoardStatsModal = ({ boardId, onClose, statsOverride }) => {
         { name: t('task.statuses.not_started'), value: stats.notStarted },
         { name: t('task.statuses.in_progress'), value: stats.inProgress },
         { name: t('task.statuses.completed'), value: stats.completed },
+        { name: t('task.statuses.overdue'), value: stats.overdue },
     ] : [];
 
     const priorityData = stats ? [
