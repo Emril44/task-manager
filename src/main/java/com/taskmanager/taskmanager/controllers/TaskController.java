@@ -5,6 +5,8 @@ import com.taskmanager.taskmanager.entities.Task;
 import com.taskmanager.taskmanager.entities.User;
 import com.taskmanager.taskmanager.exceptions.TaskNotFoundException;
 import com.taskmanager.taskmanager.exceptions.UserNotFoundException;
+import com.taskmanager.taskmanager.repositories.UserRepository;
+import com.taskmanager.taskmanager.services.EmailService;
 import com.taskmanager.taskmanager.services.TaskBoardService;
 import com.taskmanager.taskmanager.services.TaskService;
 import com.taskmanager.taskmanager.services.UserService;
@@ -35,7 +37,13 @@ public class TaskController {
     private UserService userService;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private TaskBoardService taskBoardService;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping
     public ResponseEntity<TaskDto> createTask(@RequestBody Map<String, Object> request) {
@@ -58,6 +66,18 @@ public class TaskController {
 
         Task createdTask = taskService.createTask(task);
         TaskDto taskDto = new TaskDto(createdTask);  // Map Task to TaskDTO
+
+        if (createdTask.getAssignedUser() != null) {
+            String assignedEmail = userRepository.findById(createdTask.getAssignedUser().getId())
+                    .orElseThrow(() -> new RuntimeException("User not found"))
+                    .getEmail();
+            emailService.sendTaskAssignmentEmail(
+                    assignedEmail,
+                    createdTask.getTitle(),
+                    createdTask.getDescription(),
+                    createdTask.getDueDate() != null ? createdTask.getDueDate().toString() : "No Due Date"
+            );
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(taskDto);
     }

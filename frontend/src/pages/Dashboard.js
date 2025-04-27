@@ -94,7 +94,7 @@ const Dashboard = () => {
                 priority: newTask.priority,
                 due_date: newTask.dueDate,
                 task_board_id: boardId,
-                assigned_user: user.id
+                assigned_user: newTask.assignedUserId || user.id
             };
             console.log(taskData);
             const createdTask = await api.createTask(taskData);

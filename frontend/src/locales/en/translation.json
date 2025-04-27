@@ -26,6 +26,7 @@
     "edit_board": "Edit Board",
     "task_title": "Task Title",
     "task_description": "Task Description",
+    "select_user": "Assign to user...",
     "create_task": "Create Task",
     "cancel": "Cancel",
     "delete_board": "Delete Board"

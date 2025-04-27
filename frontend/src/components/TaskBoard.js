@@ -112,6 +112,18 @@ const TaskBoard = ({ board, user, newTask, setNewTask, onDeleteTask, onCreateTas
                         value={newTask.dueDate}
                         onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
                     />
+                    <select
+                        value={newTask.assignedUserId || ''}
+                        onChange={(e) => setNewTask({ ...newTask, assignedUserId: parseInt(e.target.value) })}
+                    >
+                        <option value="">{t('taskboard.select_user')}</option>
+                        {allUsers.map((user) => (
+                            <option key={user.id} value={user.id}>
+                                {user.email}
+                            </option>
+                        ))}
+                    </select>
+
                     <button onClick={onCreateTask}>{t('taskboard.create_task')}</button>
                     <button className="cancel-button" onClick={() => setShowCreateForm(false)}>{t('taskboard.cancel')}</button>
                 </div>

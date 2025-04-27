@@ -26,6 +26,7 @@
     "edit_board": "Редагування дошки",
     "task_title": "Назва завдання",
     "task_description": "Опис завдання",
+    "select_user": "Назначити користувачу...",
     "create_task": "Створити завдання",
     "cancel": "Відміна",
     "delete_board": "Видалити дошку"
